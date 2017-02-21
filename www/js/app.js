@@ -1,6 +1,6 @@
 //Intensity copyright 2015
 
-angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.services', 'app.directives', 'app.config', 'ionic-datepicker', 'angularMoment', 'highcharts-ng', 'ngCordova'])
+angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.services', 'app.directives', 'app.config', 'ionic-datepicker', 'angularMoment', 'highcharts-ng', 'ngCordova', 'angular-svg-round-progressbar'])
 
 .run(function($ionicPlatform, AuthService, $rootScope, $state, $interval, $cordovaSQLite) {
 

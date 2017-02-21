@@ -57,7 +57,8 @@ var jsFiles = [
                 'www/lib/angular-moment/moment.js',
                 'www/lib/angular-moment/angular-moment.js',
                 'www/lib/highcharts/highcharts.src.js',
-                'www/lib/highcharts/highcharts-ng.min.js'					
+                'www/lib/highcharts/highcharts-ng.js',
+				'www/lib/angular-svg-round-progressbar/build/roundProgress.min.js'
 				];
 				
 var jsDest = 'www/js';

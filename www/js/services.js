@@ -1,21 +1,157 @@
 angular.module('app.services', [])
 
-.service('AuthService', function ($state, ConnectionService, $http, $q, API_URL, API_KEY, OfflineService){
+.service('AuthService', function ($state, ConnectionService, $http, $q, API_URL, OfflineService, $rootScope, localStorageService){
+    var AuthService = this;
+    this.login = function(data){
+        var deferred = $q.defer();
+        $http.post(API_URL + "/auth/login", data)
+        .success(function(data) {
+            console.log(data);
+            AuthService.setToken(data.token);
+            AuthService.getUserData(data.token);
+            deferred.resolve(data.token);
+            
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
 
+        return deferred.promise;        
+    }; 
+    this.getUserData = function(token){
+        var deferred = $q.defer();
+        if (!token){deferred.reject("No token");}
+        $http.get(API_URL + '/user?token=' + token)
+        .success(function(data) {
+            var userData = data.user;
+            $rootScope.user = userData;
+            AuthService.setUser(userData); 
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;                 
+    }
+
+    this.register = function(data){
+        var deferred = $q.defer();
+        $http.post(API_URL + "/auth/signup", data)
+        .success(function(data) {
+            AuthService.setToken(data.token);     
+            AuthService.getUserData(data.token);
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;        
+    };
+     
+    this.recoverPassword = function(email){
+        var deferred = $q.defer();
+        $http.post(API_URL + '/auth/recovery',{"email":email})
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;                 
+    } 
+    this.recoverPasswordReset = function(password, token){
+        
+        var deferred = $q.defer();
+        if (!token){deferred.reject("No token");}  
+        $http.post(API_URL + '/auth/recoveryreset?token=' + token,{"password":password})
+        .success(function(data) {
+            AuthService.setToken(data.token);
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;                 
+    }   
+    
+    this.resetPassword = function(data){
+        
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}  
+        data["token"] = token;
+        $http.post(API_URL + '/auth/reset?token=' + token,data)
+        .success(function(data) {
+            AuthService.setToken(data.token);
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;                 
+    } 
+ 
+    this.logout = function(){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.post(API_URL + "/auth/logout?token=" + token)
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+          
+        AuthService.removeToken();
+        AuthService.removeUser();
+        $rootScope.user = null;
+        
+
+        return deferred.promise;         
+    }
+    
+    this.setToken = function(token){
+        window.localStorage.mb_user_token = JSON.stringify(token);
+        
+    }
+    this.getToken = function(){
+        var data = window.localStorage.mb_user_token ? JSON.parse(window.localStorage.mb_user_token) : null;
+        return data;        
+    }
+    this.removeToken = function(){
+        window.localStorage.mb_user_token = null;
+    }
+    
+    this.setUser = function(user){
+        window.localStorage.mb_user = JSON.stringify(user);
+    }
+    this.getUser = function(){
+        var data = window.localStorage.mb_user ? JSON.parse(window.localStorage.mb_user) : null;
+        return data;
+    }
+    this.removeUser = function(){
+        window.localStorage.mb_user = null;
+    } 
+   
 })
 
 
-.service('MainService', function (ConnectionService, $http, $q, API_URL, API_KEY, $timeout, AuthService, OfflineService){
+.service('MainService', function (ConnectionService, $http, $q, API_URL, $timeout, AuthService, OfflineService){
     
 })
 
 
-.service('ConnectionService', function ($http, $ionicLoading, $rootScope,$interval, API_URL, API_KEY, OfflineService){
+.service('ConnectionService', function ($http, $ionicLoading, $rootScope,$interval, API_URL, OfflineService){
     var offlineMode = false;
     var promise = null;
     var ConnectionService = this;
     var testRequest = function(){
-        $http.post(API_URL, {key:API_KEY})    
+        $http.post(API_URL, {key:"API_KEY"})    
             .success(function(data) {
                 if (promise){$interval.cancel(promise);promise = null;}  
                 document.body.classList.remove("offline-mode");
