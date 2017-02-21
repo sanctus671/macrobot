@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.service('AuthService', function ($state, ConnectionService, $http, $q, API_URL, OfflineService, $rootScope, localStorageService){
+.service('AuthService', function ($state, ConnectionService, $http, $q, API_URL, OfflineService, $rootScope){
     var AuthService = this;
     this.login = function(data){
         var deferred = $q.defer();
@@ -20,6 +20,7 @@ angular.module('app.services', [])
     }; 
     this.getUserData = function(token){
         var deferred = $q.defer();
+        var token = AuthService.getToken();        
         if (!token){deferred.reject("No token");}
         $http.get(API_URL + '/user?token=' + token)
         .success(function(data) {
@@ -48,6 +49,19 @@ angular.module('app.services', [])
 
         return deferred.promise;        
     };
+    
+    this.userIsLoggedIn = function(){
+        var deferred = $q.defer(),  
+            AuthService = this,
+            user = AuthService.getToken();
+        if (user){
+            deferred.resolve(user);           
+        }
+        else{
+            deferred.reject("No user saved");
+        }
+        return deferred.promise;
+    }    
      
     this.recoverPassword = function(email){
         var deferred = $q.defer();

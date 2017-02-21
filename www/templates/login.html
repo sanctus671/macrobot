@@ -1,38 +1,103 @@
 <ion-view>
-    <ion-content style="background-color:orangered;" gradient-bg>
-        <div class="hero no-header flat login-header">
-            <div class="content">
-                <h1>Intensity</h1>
+    <ion-content class="login-screen" scroll="false">
+        <div class="login-header">
+            <h1>Macrobot</h1>
+        </div>
+        
+        <div ng-show="currentForm === 'login'">
+            <form class="login-form" ng-submit="login()">
+                <div class="list">
+                    <label class="item item-input">
+                      <input type="text" placeholder="Email" ng-model="user.email">
+                    </label>
+                    <label class="item item-input">
+                      <input type="text" placeholder="Password" ng-model="user.password">
+                    </label>
+                    <div class="item login-button">
+                        <button class="button button-block button-balanced">
+                          Login
+                        </button>         
+                    </div>
+
+                    <div class="item login-error" ng-if="error[currentForm].length > 0">
+                        <p ng-repeat="error in error[currentForm]">{{error[0]}}</p>
+                    </div>             
+                    <div class="item login-text">
+                        <a ng-click="currentForm = 'forgotpassword'">Forgot Password?</a>
+                    </div>
+                </div>
+
+            </form>
+
+        
+            <div class="secondary-action">
+                <button class="button button-block button-balanced" ng-click="currentForm = 'register'">
+                  Register
+                </button>              
             </div>
-            
         </div>
         
-        <div class="login-button-container">
-            <button class="button button-border button-flat icon-left ion-social-facebook button-light login-button button-no-padding" ng-click="login()">
-                
-                Login
-            </button>
-        </div>
         
-        <form class="login-button-container hidden" ng-class="{active:!showRegister}">
-            <input type="text" placeholder="Username/Email" ng-model="user.username">
-            <input type="password" placeholder="Password" ng-model="user.password">
-            <div class="error" ng-if="loginTest.error">{{loginTest.error}}</div>
-            <button type="submit" class="button button-border button-flat form-active no-ink-bg" ng-click="loginTest()">Login</button>
-            <button type="button" class="button button-border button-flat no-ink-bg" ng-click="showRegister = true">Register</button>
-        </form>
+        <div ng-show="currentForm === 'register'">
+            <form class="login-form" ng-submit="register()">
+                <div class="list">
+                    <label class="item item-input">
+                      <input type="text" placeholder="Email" ng-model="user.email">
+                    </label>
+                    <label class="item item-input">
+                      <input type="text" placeholder="Password" ng-model="user.password">
+                    </label>
+                    <label class="item item-input">
+                      <input type="text" placeholder="Confirm Password" ng-model="user.confirm_password">
+                    </label>                    
+                    <div class="item login-button">
+                        <button class="button button-block button-balanced">
+                          Register
+                        </button>         
+                    </div>
+
+                    <div class="item login-error" ng-if="error[currentForm].length > 0">
+                        <p ng-repeat="error in error[currentForm]">{{error[0]}}</p>
+                    </div>
+                </div>
+
+            </form>
+
         
-        <form class="login-button-container hidden" ng-class="{active:showRegister}">
-            <input type="email" placeholder="Enter email" ng-model="newUser.email">
-            <input type="password" placeholder="Enter password" ng-model="newUser.password">
-            <input type="password" placeholder="Confirm password" ng-model="newUser.confirmPassword">
-            <div class="error" ng-if="registerTest.error">{{registerTest.error}}</div>
-            <button type="button" class="button button-border button-flat " ng-click="showRegister = false">Login</button>
-            <button type="submit" class="button button-border button-flat form-active" ng-click="registerTest()">Register</button>
-        </form>   
+            <div class="secondary-action">
+                <button class="button button-block button-balanced" ng-click="currentForm = 'login'">
+                  Login
+                </button>              
+            </div>
+        </div>   
         
-        <ion-footer-bar class="forgot-password hide-on-keyboard-open"><a href="#" class="button button-border button-flat " ng-click="openForgotPassword()">Forgot Password?</a></ion-footer-bar>
         
+        <div ng-show="currentForm === 'forgotpassword'">
+            <form class="login-form" ng-submit="resetPassword()">
+                <div class="list">
+                    <label class="item item-input">
+                      <input type="text" placeholder="Email" ng-model="user.email">
+                    </label>                  
+                    <div class="item login-button">
+                        <button class="button button-block button-balanced">
+                          Reset Password
+                        </button>         
+                    </div>
+
+                    <div class="item login-error" ng-if="error[currentForm].length > 0">
+                        <p ng-repeat="error in error[currentForm]">{{error[0]}}</p>
+                    </div>
+                </div>
+
+            </form>
+
+        
+            <div class="secondary-action">
+                <button class="button button-block button-balanced" ng-click="currentForm = 'login'">
+                  Login
+                </button>              
+            </div>
+        </div>          
 
     </ion-content>
     
