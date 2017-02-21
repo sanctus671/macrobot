@@ -1,0 +1,180 @@
+
+
+
+/* General
+==================================*/
+
+.button{
+    box-shadow:none;
+}
+
+.button.button-default{
+ border:1px #ccc solid;   
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,input, button, select, textarea,body, *{
+    font-family:"Lato","Helvetica Neue", "Roboto", sans-serif;
+}
+h1{ 
+        font-weight: 100;
+        color:white;
+            font-size: 80px;
+}
+
+ion-content{
+        background-color: #ECECEC;
+}
+
+.bar .title.title-left {
+  text-align: center;
+}
+
+.tabs-dark > .tabs, .tabs.tabs-dark{
+    border:none;
+}
+
+
+
+
+
+
+/* Utilities
+==================================*/
+.title-bordered {
+    border-top: solid 2px #bbb;
+    padding-top: 30px;
+}
+
+p {
+    color: #555;
+    margin: 0 0 25px;
+}
+
+.scroll {
+    height: 100%;
+}
+
+.button.button-positive,.button.button-assertive,.button-energized-900 {
+    border-color: #de4223;
+    background-color: #de4223;
+    color: #fff;
+}
+
+.button.button-positive.active, .button.button-positive.activated, .button.button-assertive.active, .button.button-assertive.activated {
+        border-color: #e42012;
+    background-color: #e42012;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+img {
+    -webkit-user-drag: none;
+}
+
+
+.dragging {
+    -moz-transform: scale(1.05, 1.05);
+    -ms-transform: scale(1.05, 1.05);
+    -o-transform: scale(1.05, 1.05);
+    -webkit-transform: scale(1.05, 1.05);
+    transform: scale(1.05, 1.05);
+
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.slide-in-right {
+  -webkit-transform: translateX(100%);
+    transform: translateX(100%); }
+
+.slide-in-right.ng-enter, .slide-in-right > .ng-enter {
+  -webkit-transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 400ms;
+  transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 400ms; }
+
+.slide-in-right.ng-enter-active, .slide-in-right > .ng-enter-active {
+  -webkit-transform: translateX(0);
+    transform: translateX(0); }
+
+.slide-in-right.ng-leave, .slide-in-right > .ng-leave {
+  -webkit-transition: all ease-in-out 250ms;
+  transition: all ease-in-out 250ms; }
+
+.bar .button.button-clear.modal-button.modal-button-left{
+    left:5px;
+}
+
+.tabs.tabs-light{
+    background-image: none;
+}
+
+.highcharts-button rect{
+        fill:transparent;
+        stroke:transparent;
+}
+
+
+
+
+/* Menu
+==================================*/
+
+
+
+.platform-android .bar:not(.bar-footer){
+    height:54px !important;
+}
+
+.platform-android .bar:not(.bar-footer) .title {
+ height:54px !important;
+ line-height:48px !important;
+}
+
+.platform-android .bar:not(.bar-footer) .button{
+        min-height: 54px !important;
+    max-height:54px !important;
+}
+
+.platform-android .main-bar.bar:not(.bar-footer) .buttons-right .button{
+    line-height:37px;
+}
+
+
+.platform-android .has-header{
+    top:54px !important;
+}
+
+.platform-android .bar .button.button-clear.modal-button::before{
+        top: 0px;
+    height: 54px;
+    line-height: 54px;
+    right: 0px;
+}
+
+.platform-android .bar .button.button-clear.modal-button .icon:before{
+    line-height:42px;
+}
+
+
+.assertive-900-bg, .assertive-900-bg.activated, .assertive-900-bg:active, .assertive-900-bg:hover, .assertive-900-border, .assertive-900-border.activated, .assertive-900-border:active, .assertive-900-border:hover, .bar .button-assertive-900, .bar .button-assertive-900.activated, .bar .button-assertive-900:active, .bar .button-assertive-900:hover, .bar-assertive-900, .bar-assertive-900.activated, .bar-assertive-900:active, .bar-assertive-900:hover, .button-assertive-900, .button-assertive-900.activated, .button-assertive-900:active, .button-assertive-900:hover, .button-bar-assertive-900, .button-bar-assertive-900.activated, .button-bar-assertive-900:active, .button-bar-assertive-900:hover, .header-assertive-900, .header-assertive-900.activated, .header-assertive-900:active, .header-assertive-900:hover{
+    background-color:#de4223;
+    background: -webkit-gradient(linear, 0% 0%, 100% 0%, from(rgb(242,103,31)), to(rgb(201,27,38)));
+}
+
+.bar .title{
+    font-family:"Lato","Helvetica Neue", "Roboto", sans-serif;
+    font-weight: 300;
+    font-size: 30px !important;
+    line-height: 38px;
+}
+
+
+/* Login
+==================================*/
+
+
+
+
+/* Home
+==================================*/
+

@@ -1,0 +1,72 @@
+<ion-side-menus enable-menu-with-back-views="false">
+    <ion-side-menu-content>
+        <ion-nav-bar  class="main-bar bar-assertive-900" ng-class="{expanded: false, 'has-header-fab-right': hasHeaderFabRight, 'has-header-fab-left': hasHeaderFabLeft}" align-title="center">
+            <ion-nav-back-button class="no-text">
+            </ion-nav-back-button>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-android-menu" menu-toggle="left">
+                </button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <button class="button button-icon button-clear ion-wrench" ng-click="toolsPopover.show($event)">
+                </button>
+            </ion-nav-buttons>            
+        </ion-nav-bar>
+        <ion-nav-view name="fabContent" ></ion-nav-view>
+        <ion-nav-view name="menuContent" ng-class="{expanded: false}" ></ion-nav-view>
+    </ion-side-menu-content>
+    <ion-side-menu side="left" width="230">
+        <ion-content class="stable-bg" >
+            
+            <ion-list>
+                <ion-item class="heading-item item" nav-clear menu-close ui-sref="app.profile">
+                  <img id="menu-avatar" src="http://api.intensityapp.com/{{user.dp}}">
+                  <div class="heading-bg">
+                  </div>
+                  <div class="heading-action button-flat item item-icon-left">
+                    <i class="icon ion-person"></i>
+                    Profile
+                  </div>
+                </ion-item>                
+                
+                
+                <ion-item class="button-flat item item-icon-left" nav-clear menu-close ui-sref="app.home">
+                    <i class="icon ion-ios-compose"></i>
+                    Diary
+                </ion-item>  
+                
+                <ion-item class="button-flat item item-icon-left" nav-clear menu-close ui-sref="app.records">
+                    <i class="icon ion-trophy"></i>
+                    Records
+                </ion-item>
+                <ion-item class="button-flat item item-icon-left" nav-clear menu-close ui-sref="app.stats">
+                    <i class="icon ion-arrow-graph-up-right"></i>
+                    Stats
+                </ion-item> 
+                <ion-item class="button-flat item item-icon-left" nav-clear menu-close ui-sref="app.leaderboard">
+                    <i class="icon ion-ribbon-a"></i>
+                    Leaderboard
+                </ion-item>                  
+                <ion-item class="button-flat item item-icon-left" nav-clear menu-close ui-sref="app.programs">
+                    <i class="icon ion-ios-calendar"></i>
+                    Programs
+                </ion-item> 
+
+                
+                
+                <ion-item class="button-flat item item-icon-left" nav-clear menu-close ui-sref="app.friends">
+                    <i class="icon ion-ios-people"></i>
+                    Friends
+                </ion-item>                 
+                
+                   
+                <ion-item class="button-flat item item-icon-left" nav-clear menu-close ui-sref="app.settings">
+                    <i class="icon ion-ios-gear"></i>
+                    Settings
+                </ion-item>
+            </ion-list>
+            
+ 
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

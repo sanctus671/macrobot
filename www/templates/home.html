@@ -1,0 +1,62 @@
+<ion-view view-title="Intensity" >
+    <ion-content id="main-content" ng-class="{expanded:false}" class="animate-ripple home-diary-screen" on-swipe-left="dateChanged(selectedDate,1)" on-swipe-right="dateChanged(selectedDate,-1)" overflow-scroll="true">
+        <ion-refresher
+            pulling-text="Pull to sync..."
+            on-refresh="doRefresh(true)">
+        </ion-refresher>
+         
+        <div class="tabs tabs-light tabs-icon-top static diary-nav">
+             <div class="button button-flat button-block button-light diary-arrow left-arrow" ng-click="dateChanged(selectedDate,-1)"><i class="icon ion-chevron-left"></i></div>
+            <a class="tab-item" ng-click="openDatePicker()">
+                <i class="icon ion-ios-calendar"></i> {{selectedDate | amCalendar }}
+            </a>
+             <div class="button button-flat button-block button-light diary-arrow right-arrow" ng-click="dateChanged(selectedDate,1)"><i class="icon ion-chevron-right"></i></div>
+        </div>       
+        
+        <div class="offline-banner">
+            Offline Mode
+        </div>
+
+ <div class="home-spinner" ng-show="loading"><ion-spinner></ion-spinner></div>       
+<div class="row diary-empty empty-container" ng-if="!loading && diary.length < 1">
+      <div class="col col-center">
+        <div class="empty-results">
+          <i class="icon ion-ios-calendar"></i>
+          <h3 class="no-results">Diary empty</h3>
+        </div>
+      </div>
+    </div>  
+        
+        
+<div ng-if="diary.length > 0">        
+    <ion-list class="list" >                
+        <div  class="item item-avatar item-icon-right diaryhome-list-item" ng-repeat="exercise in diary track by $index" on-hold="openExerciseOptions(exercise)">
+            <div class="exercise-home-avatar" ng-click="openAddSet(exercise);$event.stopPropagation()">
+                <div class="c100 p0 p{{(exercise.goals.progress/exercise.goals.goal)*100 | number:0}}">
+                    <span>{{exercise.sets.length}}<span class="circle-subtitle" ng-if="exercise.sets.length !== 1">sets</span><span class="circle-subtitle" ng-if="exercise.sets.length === 1">set</span></span>
+                  <div class="slice">
+                    <div class="cbar" style="border-color:rgb(222, {{(exercise.goals.progress/exercise.goals.goal)*100 + 40 | number:0}}, 35);"></div>
+                  </div>
+                  <div class="slice slice2">
+                    <div class="fill" style="border-color:rgb(222, {{(exercise.goals.progress/exercise.goals.goal)*100 + 40 | number:0}}, 35);"></div>
+                  </div>
+                </div>
+            </div>
+            <div ng-click="selectExercise(exercise)">
+            <h2 >{{exercise.name}}</h2>
+            <p ng-if="user.goals.primary !== 'none' && exercise.goals.progress < exercise.goals.goal">{{exercise.goals.goal - exercise.goals.progress}}<span ng-if="user.goals.primary !== 'reps'">{{user.units}}</span> ({{((1 -exercise.goals.progress/exercise.goals.goal))*100 | number:0}}%) to go</p>
+            <p ng-if="user.goals.primary !== 'none' && exercise.goals.progress >= exercise.goals.goal"><span ng-if="exercise.calibrating">Calibrating</span><span ng-if="!exercise.calibrating">Goal complete</span></p>
+            <p ng-if="user.goals.primary === 'none'">You have tracked {{exercise.sets.length}} sets!</p>
+            <i class="icon ion-chevron-right muted"></i>
+            </div>
+        </div>
+    </ion-list>   
+</div>
+   
+
+  
+        
+    <button class="button button-flat button-light button-stable push-down add-new-exercise" ng-click="openAddExercise()">Add Exercise</button>    
+    </ion-content>
+
+</ion-view>
