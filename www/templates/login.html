@@ -4,7 +4,7 @@
             <h1>Macrobot</h1>
         </div>
         
-        <div ng-show="currentForm === 'login'">
+        <div ng-show="form.currentForm === 'login'">
             <form class="login-form" ng-submit="login()">
                 <div class="list">
                     <label class="item item-input">
@@ -19,11 +19,11 @@
                         </button>         
                     </div>
 
-                    <div class="item login-error" ng-if="error[currentForm].length > 0">
-                        <p ng-repeat="error in error[currentForm]">{{error[0]}}</p>
+                    <div class="item login-error" ng-if="error[form.currentForm].length > 0">
+                        <p ng-repeat="error in error[form.currentForm]">{{error[0]}}</p>
                     </div>             
                     <div class="item login-text">
-                        <a ng-click="currentForm = 'forgotpassword'">Forgot Password?</a>
+                        <a ng-click="form.currentForm = 'forgotpassword'">Forgot Password?</a>
                     </div>
                 </div>
 
@@ -31,14 +31,14 @@
 
         
             <div class="secondary-action">
-                <button class="button button-block button-balanced" ng-click="currentForm = 'register'">
+                <button class="button button-block button-balanced" ng-click="form.currentForm = 'register'">
                   Register
                 </button>              
             </div>
         </div>
         
         
-        <div ng-show="currentForm === 'register'">
+        <div ng-show="form.currentForm === 'register'">
             <form class="login-form" ng-submit="register()">
                 <div class="list">
                     <label class="item item-input">
@@ -56,8 +56,8 @@
                         </button>         
                     </div>
 
-                    <div class="item login-error" ng-if="error[currentForm].length > 0">
-                        <p ng-repeat="error in error[currentForm]">{{error[0]}}</p>
+                    <div class="item login-error" ng-if="error[form.currentForm].length > 0">
+                        <p ng-repeat="error in error[form.currentForm]">{{error[0]}}</p>
                     </div>
                 </div>
 
@@ -65,14 +65,61 @@
 
         
             <div class="secondary-action">
-                <button class="button button-block button-balanced" ng-click="currentForm = 'login'">
+                <button class="button button-block button-balanced" ng-click="form.currentForm = 'login'">
                   Login
                 </button>              
             </div>
         </div>   
         
         
-        <div ng-show="currentForm === 'forgotpassword'">
+        <div ng-show="form.currentForm === 'profile'">
+            <form class="login-form" ng-submit="saveProfile()">
+                <div class="list">
+                    <div class="item gender-select">
+                        <div>Select Your Gender</div>
+                        <i class="icon ion-man" ng-click="profile.gender = 'male'" ng-class="{active:profile.gender === 'male'}"></i>
+                        <i class="icon ion-woman" ng-click="profile.gender = 'female'" ng-class="{active:profile.gender === 'female'}"></i>
+                    </div>
+                    <label class="item item-input">
+                      <input type="number" placeholder="Age" ng-model="profile.age">
+                    </label>
+                    <label class="item item-input">
+                      <input type="number" placeholder="Bodyfat" ng-model="profile.bodyfat">%
+                    </label>    
+                    <div class="weight-select">
+                        <label class="item item-input">
+                          <input type="number" placeholder="Weight" ng-model="profile.weight">
+                        </label>                    
+                        <label class="item item-input  item-select">                       
+                          <select ng-model="profile.weight_unit">
+                              <option ng-value="lbs">lbs</option>
+                              <option ng-value="kg">kg</option>
+                          </select>
+                        </label>  
+                    </div>
+                    <div class="item login-button">
+                        <button class="button button-block button-balanced">
+                          Get Macros
+                        </button>         
+                    </div>
+
+                    <div class="item login-error" ng-if="error[form.currentForm].length > 0">
+                        <p ng-repeat="error in error[form.currentForm]">{{error[0]}}</p>
+                    </div>
+                </div>
+
+            </form>
+
+        
+            <div class="secondary-action">
+                <button class="button button-block button-balanced" ui-sref="app.home">
+                  Skip
+                </button>              
+            </div>
+        </div>         
+        
+        
+        <div ng-show="form.currentForm === 'forgotpassword'">
             <form class="login-form" ng-submit="resetPassword()">
                 <div class="list">
                     <label class="item item-input">
@@ -84,8 +131,8 @@
                         </button>         
                     </div>
 
-                    <div class="item login-error" ng-if="error[currentForm].length > 0">
-                        <p ng-repeat="error in error[currentForm]">{{error[0]}}</p>
+                    <div class="item login-error" ng-if="error[form.currentForm].length > 0">
+                        <p ng-repeat="error in error[form.currentForm]">{{error[0]}}</p>
                     </div>
                 </div>
 
@@ -93,7 +140,7 @@
 
         
             <div class="secondary-action">
-                <button class="button button-block button-balanced" ng-click="currentForm = 'login'">
+                <button class="button button-block button-balanced" ng-click="form.currentForm = 'login'">
                   Login
                 </button>              
             </div>

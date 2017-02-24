@@ -1,0 +1,85 @@
+<ion-modal-view>
+	<ion-header-bar class="bar-balanced account-header">
+		<div class="modal-button" ng-click="accountModal.hide()">Close</div>            
+		<h1 class="title modal-title">Account</h1>
+                <div class="modal-button2" ng-click="accountModal.hide()">Save</div> 
+	</ion-header-bar>
+	<ion-content >
+            <div class="account-highlights">
+                <div class="account-avatar">
+                    <img src="https://cdn2.iconfinder.com/data/icons/flat-design-icons-set-2/256/face_human_blank_user_avatar_mannequin_dummy-512.png"/>
+                </div>
+                <div class="account-name">John Smith</div>
+                <div class="account-acheivements row">
+                    <div class="col">
+                        <i class="icon ion-ios-checkmark"></i>
+                        <h2>202</h2>
+                        <p>weigh ins</p>
+                    </div>
+                    <div class="col">
+                        <i class="icon ion-arrow-graph-down-right"></i>
+                        <h2>10kg</h2>
+                        <p>lost</p>                        
+                    </div>
+                    <div class="col">
+                        <i class="icon ion-ios-calendar"></i>
+                        <h2>245</h2>
+                        <p>day streak</p>                        
+                    </div>
+                </div>
+            </div>
+            <div class="list account-inputs">
+
+              <div class="item item-divider">
+                Edit Profile
+              </div>
+            <label class="item item-input">
+              <span class="input-label">First Name</span>
+              <input type="text" placeholder="Enter your first name">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Last Name</span>
+              <input type="text" placeholder="Enter your last name">
+            </label>
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Gender
+              </div>
+              <select>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Age</span>
+              <input type="number" placeholder="Enter your age">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Bodyfat %</span>
+              <input type="number" placeholder="Enter your bodyfat %">
+            </label>                
+            </div>    
+            
+            
+            <div class="list account-inputs">
+
+              <div class="item item-divider">
+                Account
+              </div>
+            <label class="item item-input">
+              <span class="input-label">Email</span>
+              <input type="email" placeholder="Enter your email">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Password</span>
+              <input type="password" placeholder="Enter to change password">
+            </label>    
+            <a class="item item-icon-left" ng-click="logout()">
+              Logout
+              <i class="icon ion-ios-locked"></i>
+            </a>                
+            </div>              
+            
+            
+	</ion-content>
+</ion-modal-view>

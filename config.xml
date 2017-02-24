@@ -89,18 +89,18 @@
     <icon gap:platform="ios" src="resources/icon/ios/icon.png" width="57" height="57"/>
     <icon gap:platform="ios" src="resources/icon/ios/icon_2x.png" width="114" height="114"/>
     <icon gap:platform="ios" src="resources/icon/ios/icon-40.png" width="40" height="40"/>
-    <icon gap:platform="ios" src="resources/icon/ios/icon-40_2x.png" width="80" height="80"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-40-2x.png" width="80" height="80"/>
     <icon gap:platform="ios" src="resources/icon/ios/icon-50.png" width="50" height="50"/>
-    <icon gap:platform="ios" src="resources/icon/ios/icon-50_2x.png" width="100" height="100"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-50-2x.png" width="100" height="100"/>
     <icon gap:platform="ios" src="resources/icon/ios/icon-60.png" width="60" height="60"/>
-    <icon gap:platform="ios" src="resources/icon/ios/icon-60_2x.png" width="120" height="120"/>
-    <icon gap:platform="ios" src="resources/icon/ios/icon-60_3x.png" width="180" height="180"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-60-2x.png" width="120" height="120"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-60-3x.png" width="180" height="180"/>
     <icon gap:platform="ios" src="resources/icon/ios/icon-72.png" width="72" height="72"/>
-    <icon gap:platform="ios" src="resources/icon/ios/icon-72_2x.png" width="144" height="144"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-72-2x.png" width="144" height="144"/>
     <icon gap:platform="ios" src="resources/icon/ios/icon-76.png" width="76" height="76"/>
-    <icon gap:platform="ios" src="resources/icon/ios/icon-76_2x.png" width="152" height="152"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-76-2x.png" width="152" height="152"/>
     <icon gap:platform="ios" src="resources/icon/ios/icon-small.png" width="29" height="29"/>
-    <icon gap:platform="ios" src="resources/icon/ios/icon-small_2x.png" width="58" height="58"/>	
+    <icon gap:platform="ios" src="resources/icon/ios/icon-small-2x.png" width="58" height="58"/>	
 	
 	<icon src="resources/icon.png" gap:platform="winphone" />
 	
@@ -108,36 +108,38 @@
 
 	
 
-    <gap:splash gap:platform="android" src="resources/screen/android/ldpi-landscape.png" gap:qualifier="land-ldpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/mdpi-landscape.png" gap:qualifier="land-mdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/hdpi-landscape.png" gap:qualifier="land-hdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/xhdpi-landscape.png" gap:qualifier="land-xhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/xxhdpi-landscape.png" gap:qualifier="land-xxhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/xxxhdpi-landscape.png" gap:qualifier="land-xxxhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/ldpi-portait.png" gap:qualifier="port-ldpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/mdpi-portait.png" gap:qualifier="port-mdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/hdpi-portait.png" gap:qualifier="port-hdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/xhdpi-portait.png" gap:qualifier="port-xhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/xxhdpi-portait.png" gap:qualifier="port-xxhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/xxxhdpi-portait.png" gap:qualifier="port-xxxhdpi"/>	
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-ldpi-landscape.png" gap:qualifier="land-ldpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-mdpi-landscape.png" gap:qualifier="land-mdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-hdpi-landscape.png" gap:qualifier="land-hdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xhdpi-landscape.png" gap:qualifier="land-xhdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxhdpi-landscape.png" gap:qualifier="land-xxhdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxxhdpi-landscape.png" gap:qualifier="land-xxxhdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-ldpi-portait.png" gap:qualifier="port-ldpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-mdpi-portait.png" gap:qualifier="port-mdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-hdpi-portait.png" gap:qualifier="port-hdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xhdpi-portait.png" gap:qualifier="port-xhdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxhdpi-portait.png" gap:qualifier="port-xxhdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxxhdpi-portait.png" gap:qualifier="port-xxxhdpi"/>	
 	
 	
 
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-568h_2x.png" width="640" height="1136"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-667h_2x.png" width="750" height="1334"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-Portrait-736h_3x.png" width="1242" height="2208"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-Landscape-736h_3x.png" width="2208" height="1242"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-Landscape_2x.png" width="2048" height="1536"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-Landscape.png" width="1024" height="768"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-Portrait_2x.png" width="1536" height="2048"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default-Portrait.png" width="768" height="1024"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default_2x.png" width="640" height="960"/>
-    <gap:splash gap:platform="ios" src="resources/screen/ios/Default.png" width="320" height="480"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-portrait-568h-2x.png" width="640" height="1136"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-landscape-568h-2x.png" width="1136" height="640"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-portrait-667h.png" width="750" height="1334"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-landscape-667h.png" width="1334" height="750"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-portrait-736h.png" width="1242" height="2208"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-landscape-736h.png" width="2208" height="1242"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-ipad-landscape-2x.png" width="2048" height="1536"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-ipad-landscape.png" width="1024" height="768"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-ipad-portrait-2x.png" width="1536" height="2048"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-ipad-portrait.png" width="768" height="1024"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-portrait-2x.png" width="640" height="960"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-landscape-2x.png" width="960" height="640"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-portrait.png" width="320" height="480"/>
+    <gap:splash gap:platform="ios" src="resources/screen/ios/screen-iphone-landscape.png" width="480" height="320"/>
 	
-	
-	<gap:splash src="resources/screen/windows/Default.jpg" gap:platform="winphone" />
-	
-	<gap:splash src="resources/splash.png" />
+
+    <gap:splash src="resources/splash.png" />
 	
 	
 	
@@ -156,5 +158,4 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-	<platform name="winphone"></platform>
 </widget>

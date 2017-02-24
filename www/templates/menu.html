@@ -1,14 +1,12 @@
 <ion-side-menus enable-menu-with-back-views="false">
     <ion-side-menu-content>
         <ion-nav-bar  class="main-bar bar-balanced" align-title="center">
-            <ion-nav-back-button class="no-text">
-            </ion-nav-back-button>
             <ion-nav-buttons side="left">
-                <button class="button button-icon button-clear ion-ios-help">
+                <button class="button button-icon button-clear ion-ios-help" ng-click="openHelp()">
                 </button>
             </ion-nav-buttons>
             <ion-nav-buttons side="right">
-                <button class="button button-icon button-clear ion-ios-person">
+                <button class="button button-icon button-clear ion-ios-person" ng-click="openProfile()">
                 </button>
             </ion-nav-buttons> 
         </ion-nav-bar>

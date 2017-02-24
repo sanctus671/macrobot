@@ -113,6 +113,20 @@ img {
         stroke:transparent;
 }
 
+.modal-button, .modal-button2{
+        font-weight: 100;
+    font-size: 20px;
+    line-height: 32px;
+    margin-left: 10px;
+}
+
+.modal-button2{
+    margin-left: 0px;
+    display: flex;
+    position: absolute;
+    right: 15px;  
+}
+
 
 
 
@@ -135,8 +149,20 @@ img {
     max-height:54px !important;
 }
 
+.main-bar.bar:not(.bar-footer) .buttons-left .button:before{
+   font-size: 28px;
+}
+
+.main-bar.bar:not(.bar-footer) .buttons-left .button:active{
+    opacity:0.3;
+}
+
 .platform-android .main-bar.bar:not(.bar-footer) .buttons-right .button{
-    line-height:37px;
+    line-height:40px;
+}
+
+.platform-android .main-bar.bar:not(.bar-footer) .buttons-left .button{
+    line-height:40px;
 }
 
 
@@ -159,6 +185,8 @@ img {
 .bar.bar-balanced{
     background-color:#69cf8d;
     border-color:#69cf8d;
+        background-size: 100% 0px;
+        box-shadow: 0 1px 3px rgba(0,0,0,.1);
 }
 
 .button.button-balanced {
@@ -212,7 +240,7 @@ img {
     border-bottom:1px solid rgba(255,255,255,1);
 }
 
-.login-form input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+.login-form input::-webkit-input-placeholder{ /* Chrome/Opera/Safari */
   color: rgba(255,255,255,0.5);
 }
 
@@ -285,8 +313,280 @@ img {
     color:white;
 }
 
+.login-form .item.gender-select{
+    color: rgba(255,255,255,0.5);
+    font-size:18px;
+    padding-bottom:0px;
+}
+
+.gender-select > div{
+    margin-bottom:5px;
+}
+
+.gender-select i.icon{
+        font-size: 50px;
+    color: rgba(255,255,255,0.5);
+        margin: 0px 5px;
+}
+
+.gender-select i.icon.active{
+    color:white;
+}
+
+.login-form .item-input{
+    color:rgba(255,255,255,0.5);
+}
+
+.weight-select{
+    text-align:left;
+}
+
+.weight-select .item-input{
+    display: inline-table;
+    width: 80%;
+}
+
+.weight-select .item-input.item-select{
+ width:20%;   
+}
+
+.weight-select .item-input.item-select select{
+ background: transparent;
+    border-bottom: 1px solid rgba(255,255,255, 0.5);
+    color: white;
+    max-width: 100%;
+    padding-right: 0px;
+    width: 100%;
+    direction: ltr;
+    padding-left: 5px;    
+}
+
+.weight-select .item-input.item-select:after{                                                  
+right: 5px;
+    color: rgba(255,255,255, 0.5);  
+}
 
 
 /* Home
 ==================================*/
 
+.goal-slider{
+    background-color: #ddd;
+    height: 30px;
+    padding: 5px;
+}
+
+.goal-slider .swiper-container-horizontal>.swiper-pagination{
+    display:none;
+}
+
+.goal-slider .box{
+    text-align: center;
+    color:#ccc;
+}
+
+.goal-slider .swiper-slide-active .box{
+    color:black;
+}
+
+.weight-progress{
+        text-align: center;
+    padding: 20px;
+    position: relative;
+        margin-top: 20px;
+
+}
+
+.weight-progress .settings{
+    position: absolute;
+    color: #cccccc;
+    font-size: 30px;
+    right: 20px;
+    top: 0px;
+    z-index:9;
+}
+
+.weight-progress .settings i{
+    margin-left:10px;
+}
+
+.weight-progress .settings i.activated{
+ color:#444;   
+}
+
+.weight-input{
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;    
+}
+
+.weight-input .weight{
+ font-size:40px;   
+}
+
+.weight-input .weight-above{
+        color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+.weight-input .weight-entered{
+    margin-top: 106px;
+}
+
+.weight-input .enter-weight{
+        color: rgba(0, 0, 0, 0.5);
+    margin-top: 130px;
+    font-size: 20px;
+}
+
+.macros{
+    text-align: center;
+    
+    position: relative;
+}
+
+.macros .row{
+    height:50%;
+}
+
+.macros .col:not(:last-child){
+    border-right: 1px solid #ddd;
+}
+
+
+
+
+.macros .number{
+    font-size: 30px;
+    font-weight: 200;
+        line-height: 40px;
+}
+
+
+.macros .text{
+       font-size: 18px;
+    color: rgba(0, 0, 0, 0.3); 
+}
+
+.macro-details{
+        margin-top: 30px;
+    border-top: 1px solid #dddddd;
+    padding-top: 15px;
+    margin-bottom:40px;
+
+}
+
+.macro-details .card .item{
+        background-color: rgb(105, 207, 141);
+        padding-right: 40px;
+}
+
+.macro-details .card .item i, .macro-details .card .item h2{
+    color: white;
+}
+
+.macro-details .card .item p{
+    color:rgba(255,255,255,0.7);
+}
+
+.macro-details .card .item .icon.ion-edit{
+font-size: 18px;
+    color: rgba(255, 255, 255, 0.5);    
+}
+
+.macro-details .card .item .icon.ion-edit.activated{
+ color:white;   
+}
+
+
+
+/* Account
+==================================*/
+
+.bar.bar-balanced.account-header{
+    box-shadow:none;
+}
+
+.account-highlights{
+    color:White;
+    background-color:rgb(105, 207, 141);
+    text-align:center;
+    padding: 20px;
+}
+
+.account-avatar img{
+    width: 100px;
+    height: 100px;
+    border-radius:50px;
+}
+
+.account-name{
+    font-size: 22px;
+    font-weight: 300;
+    margin-top: 10px;
+}
+
+.account-acheivements.row{
+    margin-top: 20px;
+    margin-bottom:5px;
+}
+
+.account-acheivements i{
+        font-size: 25px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.account-acheivements h2{
+        margin: 0px 5px;
+    color: White;
+    font-weight: 200;
+    font-size: 26px;
+}
+
+.account-acheivements p{
+color: white;
+    font-size: 12px;
+    margin: 0px;
+    letter-spacing: 0.4px;
+}
+
+.list.account-inputs{
+    margin-bottom:40px;
+}
+
+.list.account-inputs:nth-child(2){
+    margin-bottom:0px;
+}
+
+.list.account-inputs:nth-child(2) .item:last-child{
+    border-bottom:none;
+}
+
+.account-inputs .item.item-divider{
+    height: 49px;
+    line-height: 29px;
+    font-size: 20px;
+    font-weight: 300;    
+}
+
+.account-inputs .item input{
+    text-align:right;
+}
+
+/* Help
+==================================*/
+
+.help-slider{
+        padding-top: 20px;
+}
+
+.help-slider h2{
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.help-slider p{
+        padding: 15px 20px;
+}

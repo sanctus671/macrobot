@@ -13,8 +13,9 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
 
         
         AuthService.userIsLoggedIn().then(function(response){
-            
+            //$rootScope.user = AuthService.getUser();
             if (!$rootScope.user){
+                
                 AuthService.getUserData().then(function(data){
                     $rootScope.user = data;
                     if (window.cordova){
@@ -38,7 +39,8 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
                 });                 
             }
 
-        },function(response){$state.go('login');});        
+        },function(response){$state.go('login');});    
+
         
         if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -74,7 +76,9 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
       
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){ // UI Router Authentication Check
+        
       if (toState.data.authenticate){
+          
           AuthService.userIsLoggedIn().then(function(response){},function(){$state.go('login');});
       }
     });  

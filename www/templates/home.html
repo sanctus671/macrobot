@@ -2,10 +2,147 @@
     <ion-content overflow-scroll="true">
         <ion-refresher
             pulling-text="Pull to sync..."
-            on-refresh="doRefresh(true)">
+            on-refresh="doRefresh()">
         </ion-refresher>
 
-        <a ng-click="logout()">Logout</a>
+
+        
+  <ion-slides  options="goalSlideOptions" slider="data.slider" class="goal-slider">
+    <ion-slide-page ng-repeat="goal in goals">
+      <div class="box">{{goal}}</div>
+    </ion-slide-page>      
+  </ion-slides>    
+        
+        
+    <div class="weight-progress">
+        <div class="settings">
+            <i class="icon ion-ios-calendar" ng-click="openCalendar()"></i>
+            <i class="icon ion-ios-gear" ng-click="openSettings()"></i>
+        </div>        
+        <round-progress
+            max="progressBar.max"
+            current="progressBar.current"
+            color="{{progressBar.color}}"
+            bgcolor="#ccc"
+            radius="120"
+            stroke="5"
+            semi="false"
+            rounded="true"
+            clockwise="true"
+            responsive="false"
+            duration="800"
+            animation="easeInOutQuart"
+            animation-delay="0"
+            ng-click="openAddWeight()"></round-progress>    
+        <div class="weight-input" ng-click="openAddWeight()">
+            <div class="weight-entered" ng-if="user.bodyweight && user.bodyweight.weight">
+                <div class="weight-above">Todays Weigh In</div>
+                <div class="weight">{{user.bodyweight.weight  | number : 1}}{{user.bodyweight.unit}}</div>
+            </div>
+            <div class="enter-weight" ng-if="!user.bodyweight || !user.bodyweight.weight">Enter Todays Weight</div>
+        </div>        
+    </div>        
+        
+        
+        
+    <div class="macros">
+        <div class="row">
+          <div class="col">
+              <div class="number">{{user.macros.fat | number : 0}}g</div>
+              <div class="text">fat</div>
+          </div>
+          <div class="col">
+              <div class="number">{{user.macros.carbohydrates | number : 0}}g</div>
+              <div class="text">carbs</div>
+          </div>
+          <div class="col">
+              <div class="number">{{user.macros.protein | number : 0}}g</div>
+              <div class="text">protein</div>
+          </div>
+        </div>        
+    </div>    
+        
+        <div class="macro-details">
+            <div class="card">
+              <div class="item item-text-wrap item-icon-left item-icon-right">
+                  <i class="icon ion-ios-bolt"></i>
+                <h2>{{user.macros.calories | number : 0}} daily calories</h2>
+                <p ng-if="user.last_macros && user.macros.calories !== user.last_macros.calories">
+                    <span ng-if="user.macros.calories > user.last_macros.calories">Increased </span>
+                    <span ng-if="user.macros.calories < user.last_macros.calories">Decreased </span>
+                    {{user.macros.calories - user.last_macros.calories  | number : 0}} calories from {{formatDate(user.macros)}}</p>
+                <p ng-if="user.last_macros && user.macros.calories === user.last_macros.calories">Unchanged from {{formatDate(user.macros)}}.</p>                
+                <p ng-if="!user.last_macros">These are your initial estimated calories.</p>
+                    <i class="icon ion-edit" ng-click="openEditMacros()"></i>
+              </div>
+            </div>            
+            <div class="card">
+              <div class="item item-text-wrap item-icon-left item-icon-right">
+                  <i class="icon ion-android-bicycle"></i>
+                <h2>{{user.macros.activity_sessions}}x{{user.macros.activity}} weekly cardio sessions</h2>
+                <p ng-if="user.last_macros && (user.macros.activity_sessions !== user.last_macros.activity_sessions && user.macros.activity !== user.last_macros.activity)">
+                    <span ng-if="user.macros.activity_sessions >= user.last_macros.activity_sessions">+</span><span ng-if="user.macros.activity_sessions < user.last_macros.activity_sessions">-</span>{{user.macros.activity_sessions - user.last_macros.activity_sessions | number : 0}} 
+                    session<span ng-if="(user.macros.activity_sessions - user.last_macros.activity_sessions) !== 1">s</span> 
+                    and 
+                    <span ng-if="user.macros.activity >= user.last_macros.activity">+</span><span ng-if="user.macros.activity < user.last_macros.activity"></span>{{user.macros.activity - user.last_macros.activity | number : 0}}                
+                    calories
+                </p>
+                <p ng-if="user.macros.activity_sessions === user.last_macros.activity_sessions && user.macros.activity === user.last_macros.activity">Unchanged from {{formatDate(user.macros)}}.</p>              
+                <p ng-if="!user.last_macros">This is the default activity rate.</p>
+                    <i class="icon ion-edit" ng-click="openEditMacros()"></i>
+              </div>
+            </div>              
+            
+            <div class="card">
+              <div class="item item-text-wrap item-icon-left item-icon-right">
+                  <i class="icon ion-pizza"></i>
+                <h2>{{user.macros.fat | number : 0}}g of fat per day</h2>
+                <p ng-if="user.last_macros && user.macros.fat !== user.last_macros.fat">
+                    <span ng-if="user.macros.fat > user.last_macros.fat">Increased </span>
+                    <span ng-if="user.macros.fat < user.last_macros.fat">Decreased </span>
+                    {{user.macros.fat - user.last_macros.fat | number : 0}}g from {{formatDate(user.macros)}}</p>
+                <p ng-if="user.last_macros && user.macros.fat === user.last_macros.fat">Unchanged from {{formatDate(user.macros)}}.</p>
+                <p ng-if="!user.last_macros">This is your initial fat macros.</p>
+                    <i class="icon ion-edit" ng-click="openEditMacros()"></i>
+              </div>
+            </div>               
+
+            
+            <div class="card">
+              <div class="item item-text-wrap item-icon-left item-icon-right">
+                  <i class="icon ion-icecream"></i>
+                <h2>{{user.macros.carbohydrates | number : 0}}g of carbohydrates per day</h2>
+                <p ng-if="user.last_macros && user.macros.carbohydrates !== user.last_macros.carbohydrates">
+                    <span ng-if="user.macros.carbohydrates > user.last_macros.carbohydrates">Increased </span>
+                    <span ng-if="user.macros.carbohydrates < user.last_macros.carbohydrates">Decreased </span>
+                    {{user.macros.carbohydrates - user.last_macros.carbohydrates | number : 0}}g from {{formatDate(user.macros)}}</p>
+                <p ng-if="user.last_macros && user.macros.carbohydrates === user.last_macros.carbohydrates">Unchanged from {{formatDate(user.macros)}}.</p>
+                <p ng-if="!user.last_macros">This is your initial carb macros.</p>
+                    <i class="icon ion-edit" ng-click="openEditMacros()"></i>
+              </div>
+            </div> 
+
+
+            <div class="card">
+              <div class="item item-text-wrap item-icon-left item-icon-right">
+                  <i class="icon ion-egg"></i>
+                <h2>{{user.macros.protein | number : 0}}g of protein per day</h2>
+                <p ng-if="user.last_macros && user.macros.protein !== user.last_macros.protein">
+                    <span ng-if="user.macros.protein > user.last_macros.protein">Increased </span>
+                    <span ng-if="user.macros.protein < user.last_macros.protein">Decreased </span>
+                    {{user.macros.protein - user.last_macros.protein | number : 0}}g from {{formatDate(user.macros)}}</p>
+                <p ng-if="user.last_macros && user.macros.protein === user.last_macros.protein">Unchanged from {{formatDate(user.macros)}}.</p> 
+                <p ng-if="!user.last_macros">This is your initial protein macros.</p>
+                    <i class="icon ion-edit" ng-click="openEditMacros()"></i>
+              </div>
+            </div>             
+            
+        </div>
+
     </ion-content>
+    
+
+    
+            
 
 </ion-view>

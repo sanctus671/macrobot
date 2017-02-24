@@ -8,7 +8,7 @@ angular.module('app.services', [])
         .success(function(data) {
             console.log(data);
             AuthService.setToken(data.token);
-            AuthService.getUserData(data.token);
+            AuthService.getUserData();
             deferred.resolve(data.token);
             
         })
@@ -18,7 +18,7 @@ angular.module('app.services', [])
 
         return deferred.promise;        
     }; 
-    this.getUserData = function(token){
+    this.getUserData = function(noBroadcast){
         var deferred = $q.defer();
         var token = AuthService.getToken();        
         if (!token){deferred.reject("No token");}
@@ -26,7 +26,9 @@ angular.module('app.services', [])
         .success(function(data) {
             var userData = data.user;
             $rootScope.user = userData;
-            AuthService.setUser(userData); 
+            AuthService.setUser(userData);
+            if (!noBroadcast){$rootScope.$broadcast("userDataSet");}
+            deferred.resolve(data.user);
         })
         .error(function(data) {
             deferred.reject(data);
@@ -40,7 +42,7 @@ angular.module('app.services', [])
         $http.post(API_URL + "/auth/signup", data)
         .success(function(data) {
             AuthService.setToken(data.token);     
-            AuthService.getUserData(data.token);
+            AuthService.getUserData();
             deferred.resolve(data);
         })
         .error(function(data) {
@@ -112,18 +114,23 @@ angular.module('app.services', [])
     this.logout = function(){
         var deferred = $q.defer();
         var token = AuthService.getToken();
-        if (!token){deferred.reject("No token");}        
+        if (!token){deferred.reject("No token");}   
+        console.log(token);
         $http.post(API_URL + "/auth/logout?token=" + token)
         .success(function(data) {
+            AuthService.removeToken();
+            AuthService.removeUser();
+            $rootScope.user = null;            
             deferred.resolve(data);
         })
         .error(function(data) {
+            AuthService.removeToken();
+            AuthService.removeUser();
+            $rootScope.user = null;            
             deferred.reject(data);
         });
           
-        AuthService.removeToken();
-        AuthService.removeUser();
-        $rootScope.user = null;
+
         
 
         return deferred.promise;         
@@ -155,8 +162,87 @@ angular.module('app.services', [])
 })
 
 
-.service('MainService', function (ConnectionService, $http, $q, API_URL, $timeout, AuthService, OfflineService){
+.service('MainService', function (ConnectionService, $http, $q, $rootScope,API_URL, $timeout, AuthService, OfflineService){
+
+            
+    this.updateProfile = function(profile){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.put(API_URL + "/profiles/"+$rootScope.user.id + "?token=" + token, profile)
+        .success(function(data) {
+            var userData = AuthService.getUser();
+            userData["profile"] = data;
+            $rootScope.user = userData;
+            AuthService.setUser(userData);             
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }  
     
+    this.createGoal = function(goal){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.post(API_URL + "/goals?token=" + token, {goal:goal})
+        .success(function(data) {
+            var userData = AuthService.getUser();
+            userData["goal"] = data.goal;
+            $rootScope.user = userData;
+            AuthService.setUser(userData);             
+            deferred.resolve(data.goal);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;           
+    }
+    
+    this.createBodyweight = function(bodyweight){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.post(API_URL + "/bodyweights?token=" + token, bodyweight)
+        .success(function(data) {
+            var userData = AuthService.getUser();
+            userData["bodyweight"] = data.bodyweight;
+            $rootScope.user = userData;
+            AuthService.setUser(userData);             
+            deferred.resolve(data.bodyweight);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;           
+    }    
+    
+    this.updateBodyweight = function(bodyweight){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.put(API_URL + "/bodyweights/"+bodyweight.id + "?token=" + token, bodyweight)
+        .success(function(data) {
+            var userData = AuthService.getUser();
+            userData["bodyweight"]["weight"] = parseFloat(data.bodyweight.weight);
+            AuthService.setUser(userData);             
+            deferred.resolve(data.bodyweight);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }      
 })
 
 
