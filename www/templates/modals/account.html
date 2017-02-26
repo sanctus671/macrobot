@@ -2,28 +2,35 @@
 	<ion-header-bar class="bar-balanced account-header">
 		<div class="modal-button" ng-click="accountModal.hide()">Close</div>            
 		<h1 class="title modal-title">Account</h1>
-                <div class="modal-button2" ng-click="accountModal.hide()">Save</div> 
+                <div class="modal-button2" ng-click="saveProfile()">Save</div> 
 	</ion-header-bar>
 	<ion-content >
             <div class="account-highlights">
                 <div class="account-avatar">
                     <img src="https://cdn2.iconfinder.com/data/icons/flat-design-icons-set-2/256/face_human_blank_user_avatar_mannequin_dummy-512.png"/>
                 </div>
-                <div class="account-name">John Smith</div>
+                <div class="account-name">
+                    <span ng-if="!user.profile.first_name && user.profile.gender === 'female'">Jane</span>
+                    <span ng-if="!user.profile.first_name && user.profile.gender !== 'female'">John</span>
+                    <span ng-if="user.profile.first_name">{{user.profile.first_name}}</span>
+                    <span ng-if="!user.profile.last_name">Doe</span>
+                    <span ng-if="user.profile.last_name">{{user.profile.last_name}}</span>                    
+                </div>
                 <div class="account-acheivements row">
                     <div class="col">
                         <i class="icon ion-ios-checkmark"></i>
-                        <h2>202</h2>
+                        <h2>{{profileStats.weighins ? profileStats.weighins : 0 | number: 0}}</h2>
                         <p>weigh ins</p>
                     </div>
                     <div class="col">
-                        <i class="icon ion-arrow-graph-down-right"></i>
-                        <h2>10kg</h2>
-                        <p>lost</p>                        
+                        <i class="icon " ng-class="{'ion-arrow-graph-down-right':profileStats.change.weight <= 0 || !profileStats.change, 'ion-arrow-graph-up-right':profileStats.change.weight > 0}"></i>
+                        <h2>{{profileStats.change.weight ? profileStats.change.weight : 0 | number: 1}}{{profileStats.change.weight.unit ? profileStats.change.weight.unit : user.profile.weight_unit}}</h2>
+                        <p ng-if="profileStats.change.weight <= 0 || !profileStats.change">lost</p>    
+                        <p ng-if="profileStats.change.weight > 0">gained</p> 
                     </div>
                     <div class="col">
                         <i class="icon ion-ios-calendar"></i>
-                        <h2>245</h2>
+                        <h2>{{profileStats.streak ? profileStats.streak : 0  | number: 0}}</h2>
                         <p>day streak</p>                        
                     </div>
                 </div>
@@ -35,28 +42,28 @@
               </div>
             <label class="item item-input">
               <span class="input-label">First Name</span>
-              <input type="text" placeholder="Enter your first name">
+              <input type="text" placeholder="Enter your first name" ng-model="user.profile.first_name">
             </label>
             <label class="item item-input">
               <span class="input-label">Last Name</span>
-              <input type="text" placeholder="Enter your last name">
+              <input type="text" placeholder="Enter your last name" ng-model="user.profile.last_name">
             </label>
             <label class="item item-input item-select">
               <div class="input-label">
                 Gender
               </div>
-              <select>
-                <option>Male</option>
-                <option>Female</option>
+              <select ng-model="user.profile.gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </label>
             <label class="item item-input">
               <span class="input-label">Age</span>
-              <input type="number" placeholder="Enter your age">
+              <input type="number" placeholder="Enter your age" ng-model="user.profile.age">
             </label>
             <label class="item item-input">
               <span class="input-label">Bodyfat %</span>
-              <input type="number" placeholder="Enter your bodyfat %">
+              <input type="number" placeholder="Enter your bodyfat %" ng-model="user.profile.bodyfat">
             </label>                
             </div>    
             
@@ -68,11 +75,11 @@
               </div>
             <label class="item item-input">
               <span class="input-label">Email</span>
-              <input type="email" placeholder="Enter your email">
+              <input type="email" placeholder="Enter your email" ng-model="user.email">
             </label>
             <label class="item item-input">
               <span class="input-label">Password</span>
-              <input type="password" placeholder="Enter to change password">
+              <input type="password" placeholder="Enter to change password"  ng-model="user.new_password">
             </label>    
             <a class="item item-icon-left" ng-click="logout()">
               Logout

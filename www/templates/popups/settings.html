@@ -17,9 +17,19 @@
     <div class="input-label">
         Units
     </div>    
-  <select ng-model="user.profile.weight_unit">
+  <select ng-model="user.profile.weight_unit" ng-change="unitsChanged = true; user.profile.handle_data = 'A'">
       <option ng-value="lbs">lbs</option>
       <option ng-value="kg">kg</option>
   </select>
 </label>  
+
+<div class="item item-divider" ng-show='unitsChanged'>
+    Handle existing data
+</div>
+<ion-list ng-show='unitsChanged'>
+  <ion-radio ng-model="user.profile.handle_data" ng-value="'A'">Don't change</ion-radio>
+  <ion-radio ng-model="user.profile.handle_data" ng-value="'B'">Update units only</ion-radio>
+  <ion-radio ng-model="user.profile.handle_data" ng-value="'C'">Convert data</ion-radio>
+</ion-list>
+
 

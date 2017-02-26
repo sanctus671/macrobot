@@ -164,6 +164,24 @@ angular.module('app.services', [])
 
 .service('MainService', function (ConnectionService, $http, $q, $rootScope,API_URL, $timeout, AuthService, OfflineService){
 
+
+    this.getProfileStats = function(){
+        console.log("here");
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}  
+        console.log("here");
+        $http.get(API_URL + "/profile/stats?token=" + token)
+        .success(function(data) {            
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }              
             
     this.updateProfile = function(profile){
         var deferred = $q.defer();
@@ -172,8 +190,9 @@ angular.module('app.services', [])
         $http.put(API_URL + "/profiles/"+$rootScope.user.id + "?token=" + token, profile)
         .success(function(data) {
             var userData = AuthService.getUser();
-            userData["profile"] = data;
-            $rootScope.user = userData;
+            userData["profile"] = data.profile;
+            userData["email"] = $rootScope.user.email;
+            $rootScope.user.profile = userData["profile"];
             AuthService.setUser(userData);             
             deferred.resolve(data);
         })
@@ -242,7 +261,31 @@ angular.module('app.services', [])
 
 
         return deferred.promise;         
-    }      
+    }   
+    
+    
+    this.createMacros = function(macros){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.post(API_URL + "/macros?token=" + token, macros)
+        .success(function(data) {
+            var userData = AuthService.getUser();
+            userData["last_macros"] = angular.copy(userData["macros"]);
+            userData["macros"] = data.macro;
+            $rootScope.user["last_macros"] = userData["last_macros"];
+            $rootScope.user["macros"] = userData["macros"]
+            AuthService.setUser(userData);             
+            deferred.resolve(data.macros);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }
+    
 })
 
 
