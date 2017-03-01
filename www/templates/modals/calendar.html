@@ -20,33 +20,10 @@
                 </div>
             </div>
              
-          <ion-slides class="calendar-slider" options="calendarSlider.options" slider="data.slider2">
+          <ion-slides id="calendar-slider" class="calendar-slider" options="calendarSlider.options" slider="data.slider2">
               
-            <ion-slide-page  ng-repeat="i in [1, 2, 3]">           
-                <div class="box weight-lists">
-
-                    <ul class="list" >
-                        <li class="item row" ng-repeat="day in weights[calendarSlider.slider.activeIndex].this_week">
-                            <div class="col weight-day">
-                                {{day.day}}
-                                <div class="weight-hour">12:23pm</div>
-                            </div>
-                            <div class="col weight-number">{{day.weight ? day.weight : '-'}}{{day.unit}}</div>
-                            <div class="col weight-differance" ng-class="{'goal-positive' : goalInline(weights[calendarSlider.slider.activeIndex].last_week[$index].weight - day.weight) > 0,'goal-negative' : goalInline(weights[calendarSlider.slider.activeIndex].last_week[$index].weight - day.weight) < 0}">
-                                {{weights[calendarSlider.slider.activeIndex].last_week[$index].weight - day.weight}}
-                                {{day.unit}}
-                                <div class="differance-text">
-                                    From last {{day.day}}
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    
-                    <div class="average">
-                        160lbs
-                        <div class="average-text">Weekly Average</div>
-                    </div>
-                </div>                
+            <ion-slide-page  ng-repeat="i in [1, 2, 3]" id="initPage{{i}}">           
+             
             </ion-slide-page>                
 
               
@@ -56,13 +33,13 @@
             
             <div  ng-show="activeTab === 'graph'">
                 
-                <div class="card">
+                <div class="line-graph">
                     <highchart id="chart1" config="bwChartConfig"></highchart>
                 </div>
-                
-                <div class="card">
-                    <highchart id="chart1" config="bwPieChartConfig"></highchart>
-                </div>                
+                <div class="pie-graph">    
+                    <highchart id="chart2" config="macroChartConfig"></highchart>
+                </div>
+              
             </div>
             
             
@@ -75,7 +52,7 @@
             <a class="tab-item" ng-class="{'active':!activeTab || activeTab === 'calendar'}" ng-click="activeTab = 'calendar'">
                 <i class="icon ion-ios-calendar"></i> Calendar View
             </a>
-            <a class="tab-item" ng-class="{'active':activeTab === 'graph'}" ng-click="activeTab = 'graph'">
+            <a class="tab-item" ng-class="{'active':activeTab === 'graph'}" ng-click="activeTab = 'graph';getStats()">
                 <i class="icon ion-pie-graph"></i> Graph View
             </a>
         </div>     

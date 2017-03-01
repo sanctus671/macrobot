@@ -3,7 +3,7 @@
 
 angular.module('app.controllers', [])
 
-.controller('AppCtrl', function($scope, $timeout, SecuredPopups, AuthService, $state, $cordovaNativeAudio, $ionicHistory, $ionicModal, $ionicSlideBoxDelegate, $rootScope, $q, $ionicPopover, MainService) {
+.controller('AppCtrl', function($scope, $timeout, SecuredPopups, AuthService, API_URL, $state, $cordovaNativeAudio, $ionicHistory, $ionicModal, $ionicSlideBoxDelegate, $rootScope, $q, $ionicPopover, MainService) {
 
     $scope.checkConnection = function(scope){
         $rootScope.$on("connectionFound", function(){scope.doRefresh();});        
@@ -60,6 +60,39 @@ angular.module('app.controllers', [])
             $state.go("login");
         });         
     }
+    
+    $scope.useGetFile = function(){
+        var photoFunction = $scope.uploadAvatar;
+        navigator.camera.getPicture(
+                photoFunction,
+                function(message){/*alert('Failed: ' + message);*/},
+                {
+                        quality: 25,
+                        sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                }
+        )      
+    };
+
+    $scope.uploadAvatar = function(imageURI){
+          var options = new FileUploadOptions();
+          options.fileKey="fileToUpload";
+          options.fileName= $rootScope.user.email;
+          options.mimeType="image/jpeg";
+          options.params = {token:$rootScope.user.sessionid, controller:"create", action:"uploadprogramimage"};
+          var ft = new FileTransfer();
+          var token = AuthService.getToken();
+          ft.upload(imageURI, encodeURI(API_URL + "/upload?token=" + token), function(data){
+              $rootScope.user.profile.avatar = data;
+          },  
+          function(data){          
+              SecuredPopups.show('alert',{
+              title: 'Error',
+              template: 'Sorry, there was an error uploading your image.'
+              });
+          }, options);		
+
+
+    };      
   
     
 
@@ -255,6 +288,9 @@ angular.module('app.controllers', [])
                         //create
                         MainService.createBodyweight({weight:parseFloat($scope.popupWeight.weight), unit:$rootScope.user.last_bodyweight.unit});
                     }
+                    if ($scope.calendarSlider.modalOpened){
+                        $scope.reloadCalendarPage();
+                    }
                 }
             });         
     }
@@ -358,7 +394,7 @@ angular.module('app.controllers', [])
     }
     
     
-    
+    //calendar stuff
     
     $ionicModal.fromTemplateUrl('templates/modals/calendar.html', {
         scope: $scope,
@@ -367,203 +403,288 @@ angular.module('app.controllers', [])
         $scope.calendarModal = modal;
       });     
 
+    $scope.weights = [{initialSlide:true},{initialSlide:true},{initialSlide:true}];
     $scope.openCalendar = function(){
+        if ($scope.calendarSlider.modalOpened){
+            $scope.calendarModal.show();
+            return;
+        }
+        $scope.firstCalendarLoad = true;
+        $scope.weights = [{initialSlide:true},{initialSlide:true},{initialSlide:true}];
+        $scope.calendarSlider.selectedDate = moment();
+        $scope.arrangeDays();
         $scope.calendarModal.show().then(function(){
-            $scope.calendarSlider.slider.slideTo(1, 0);
-        });
+            var weekId = "initPage2";
+            $scope.calendarSlider.modalOpened = true;
+            MainService.getWeights($scope.calendarSlider.selectedDate.format("YYYY-MM-DD")).then(function(data){
+                var week = $scope.buildWeek(data, weekId);
+                $scope.weights[1] = week;
+                $scope.buildPage(week);            
+                $scope.calendarSlider.slider.slideTo(1, 0);      
+            });
+        });   
+    } 
+    
+    var datepickerObjectPopup = {
+          titleLabel: 'Select Date', //Optional
+          todayLabel: 'Today', //Optional
+          showTodayButton:true,
+          closeLabel: 'Close', //Optional
+          setLabel: 'Set', //Optional
+          errorMsgLabel : 'Please select date.', //Optional
+          todayButtonType : 'date-picker-button', //Optional
+          closeButtonType : 'date-picker-button', //Optional
+          setButtonType : 'button-assertive date-picker-button', //Optional
+          modalHeaderColor:'bar-positive', //Optional
+          modalFooterColor:'bar-positive', //Optional
+          templateType:'popup', //Optional
+          mondayFirst: true, //Optional
+          disabledDates:[], //Optional
+          callback: function (val) { //Optional
+              if (val){
+                $scope.weights = [{initialSlide:true},{initialSlide:true},{initialSlide:true}];
+                $scope.firstCalendarLoad = true;
+                $scope.calendarSlider.selectedDate = moment(val);
+                document.getElementById('initPage1').innerHTML = '';document.getElementById('initPage2').innerHTML = '';document.getElementById('initPage3').innerHTML = '';
+                var col_wrapper = document.getElementById("calendar-slider").getElementsByClassName("swiper-slide");
+                var len = col_wrapper.length;
+                for (var i = 0; i < len; i++) {
+                    if (col_wrapper[i].className.toLowerCase() == "loaded-page") {
+                        col_wrapper[i].parentNode.removeChild(col_wrapper[i]);
+                    }
+                }                
+                var weekId = "initPage2";
+                MainService.getWeights($scope.calendarSlider.selectedDate.format("YYYY-MM-DD")).then(function(data){
+                    var week = $scope.buildWeek(data, weekId);
+                    $scope.weights[1] = week;
+                    $scope.buildPage(week);            
+                    $scope.calendarSlider.slider.slideTo(1, 0);      
+                });                
+              }           
+          }
+        };  
         
+    $scope.changeDay = function(direction){
+        $scope.calendarSlider.slider.slideTo($scope.calendarSlider.slider.activeIndex + direction);
+    }
+        
+    $scope.openDatePicker = function(){
+        return; //currently not enabled
+      ionicDatePicker.openDatePicker(datepickerObjectPopup);
+    }; 
+    
+    $scope.reloadCalendarPage = function(){
+        MainService.getWeights(moment().format("YYYY-MM-DD")).then(function(data){
+            var week = $scope.buildWeek(data, "initPage2");
+            //$scope.weights[1] = week;
+            $scope.buildPage(week);  
+            console.log("here");
+        });          
+    }
+    
+    $scope.arrangeDays = function(){
+        $scope.days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        var count = $scope.days.indexOf($rootScope.user.profile.calc_day);
+        count -= $scope.days.length * Math.floor(count / $scope.days.length)
+        $scope.days.push.apply($scope.days, $scope.days.splice(0, count));      
     }    
 
-
-    $scope.weightObject = {
-            last_week:[
-                {
-                    day:"Monday",
-                    weight:160,
-                    unit:"lbs"
-                },
-                {
-                    day:"Tuesday",
-                } ,
-                {
-                    day:"Wednesday",
-                    weight:165,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Thursday",
-                    weight:161,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Friday",
-                    weight:163,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Saturday",
-                    weight:160,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Sunday",
-                    weight:161,
-                    unit:"lbs"
-                }                        
-            ],
-            this_week:[
-                {
-                    day:"Monday",
-                    weight:161,
-                    unit:"lbs"
-                },
-                {
-                    day:"Tuesday",
-                } ,
-                {
-                    day:"Wednesday",
-                    weight:163,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Thursday",
-                    weight:162,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Friday",
-                    weight:163,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Saturday",
-                    weight:164,
-                    unit:"lbs"
-                } ,
-                {
-                    day:"Sunday",
-                    weight:162,
-                    unit:"lbs"
-                }                 
-                
-            ],
-            
-        };
-    
-    $scope.weights = [];
-    
-    for (var x = 1; x < 4; x++){
-        $scope.weights.push(angular.copy($scope.weightObject));
+    $scope.buildWeek = function(data, id){
+        var week = {average:0, id:id};
+        for (var index in data.selected_week){
+            var weight = data.selected_week[index];
+            week.average = week.average + weight.weight;
+            var day = moment(weight.created_at).format("dddd");
+            week[day] = {
+                weight:weight.weight,
+                time:moment(weight.created_at).format("h:mma"),
+                unit:weight.unit,
+                differance:0
+            }
+            for (var index in data.previous_week){
+                var previousWeight = data.previous_week[index];
+                if (day === moment(previousWeight.created_at).format("dddd")){
+                    week[day].differance = previousWeight.weight - weight.weight;
+                }
+            }
+        }
+        week.average = data.selected_week.length > 0 ? week.average / data.selected_week.length : 0;   
+        
+        return week;
     }
-
+    
     $scope.calendarSlider = {
+        modalOpened:false,
+        selectedDate:false,
         options:{
             observer:true,
             pagination:false,
             onInit: function(slider){
                 $scope.calendarSlider.slider = slider;               
-                console.log("sliding to 1");
                 $scope.calendarSlider.slider.slideTo(1, 0);
             },
             onSlideChangeStart: function(slider){
-                //get weights for this week if not retreived already   
-                console.log($scope.calendarSlider.slider.activeIndex);
-                if ($scope.calendarSlider.slider.activeIndex === ($scope.calendarSlider.slider.slides.length - 1)){
-                    var newObject = angular.copy($scope.weightObject);
-                    $scope.weights.push(newObject);
-                    $scope.calendarSlider.slider.appendSlide($scope.buildPage(newObject )); 
-                    //need to get next weeks weights if there are any
-                }    
-                else if ($scope.calendarSlider.slider.activeIndex === 0){
-                    var newObject = angular.copy($scope.weightObject);
-                    $scope.weights.unshift(newObject );
-                    $scope.calendarSlider.slider.prependSlide($scope.buildPage(newObject ));
-                    //need to get previous weeks weights if there are any
-                }                 
+                if ($scope.firstCalendarLoad){$scope.firstCalendarLoad = false;return;}
+                if (slider.activeIndex < slider.previousIndex){
+                    $scope.calendarSlider.selectedDate = $scope.calendarSlider.selectedDate.subtract(1, 'weeks');
+                }
+                else if (slider.activeIndex > slider.previousIndex){
+                    $scope.calendarSlider.selectedDate = $scope.calendarSlider.selectedDate.add(1, 'weeks');
+                }
+                
+                
+                console.log($scope.calendarSlider.selectedDate);
+                if(!$scope.$$phase) {$scope.$apply();}
+                
+                if ($scope.weights[$scope.calendarSlider.slider.activeIndex].initialSlide){
+                    $scope.weights[$scope.calendarSlider.slider.activeIndex].initialSlide = false;
+                    var weekId = slider.activeIndex < slider.previousIndex ? "initPage1" : "initPage3";
+                    var weekIndex = slider.activeIndex < slider.previousIndex ? 0 : 2;
+                    MainService.getWeights($scope.calendarSlider.selectedDate.format("YYYY-MM-DD")).then(function(data){
+                        var week = $scope.buildWeek(data, weekId);
+                        $scope.weights[weekIndex] = week;
+                        $scope.buildPage(week);    
+                        $scope.addSlide();
+                    });
+                    return;
+                }                
+                
+                //add the next slide in prep
+                $scope.addSlide();
+                
+
+                              
             }            
         },
         slider:{}
     }
     
-    $scope.buildPage = function(weightObject){
-        var html = '<div class="swiper-slide"><div class="box weight-lists"> \
-         <div class="row"> \
-         <div class="col"> \
-         <ul class="list last-week"> ';
-         
-         for (var index in weightObject.last_week){
-            var day = weightObject.last_week[index];
-            html = html + '<li class="item">\
-                <span class="weight-day">Last ' + day.day + '</span>\
-                <span class="weight-number">' + (day.weight ? day.weight : '') + (day.unit ? day.unit: '') + '</span>\
-            </li>';
-        }
-        html = html + '</ul></div><div class="col">';   
-        
-        for (var index in weightObject.this_week){
-            var day = weightObject.this_week[index];
-            html = html + '<li class="item">\
-                <span class="weight-day">' + day.day + '</span>\
-                <span class="weight-number">' + (day.weight ? day.weight : '') + (day.unit ? day.unit: '') + '</span>\
-            </li>';
-        }
-        html = html + '</ul></div></div></div></div>';      
-        
-        return html;
+  
+    $scope.addSlide = function(){
+
+        var isPrevious = $scope.calendarSlider.slider.activeIndex === 0;
+        var isNext = $scope.calendarSlider.slider.activeIndex === ($scope.calendarSlider.slider.slides.length - 1);
+
+        if (isNext || isPrevious){
+            var slideDate = isNext ? angular.copy($scope.calendarSlider.selectedDate).add(1, 'weeks') : angular.copy($scope.calendarSlider.selectedDate).subtract(1, 'weeks'); 
+
+            var weekId = "page" + $scope.weights.length;
+            MainService.getWeights(slideDate.format("YYYY-MM-DD")).then(function(data){
+                var week = $scope.buildWeek(data, weekId);
+                if (isNext){
+                    $scope.weights.push(week)
+                }
+                else if (isPrevious){
+                    $scope.weights.unshift(week)
+                }
+
+                $scope.buildPage(week);
+            })
+            if (isNext){$scope.calendarSlider.slider.appendSlide('<div id="' + weekId + '" class="swiper-slide loaded-page"></div>');}
+            else if (isPrevious){$scope.calendarSlider.slider.prependSlide('<div id="' + weekId + '" class="swiper-slide loaded-page"></div>');}
+        }    
+    }    
+    
+    
+    
+    $scope.buildPage = function(week){
+        var html = '<div class="box weight-lists">\
+            <ul class="list" >';
+                for (var index in $scope.days){
+                    var day = $scope.days[index];
+                    if (!week[day]){
+                        html = html + '<li class="item row">\
+                            <div class="col weight-day">\
+                                ' + day + '\
+                                <div class="weight-hour">No weight</div>\
+                            </div>\
+                            <div class="col weight-number">\
+                                <span>-</span>\
+                            </div>\
+                            <div class="col weight-differance">\
+                                <span>-</span>\
+                                <div class="differance-text">\
+                                    From last ' + day + '\
+                                </div>\
+                            </div>\
+                        </li>';                        
+                    }
+                    else{
+                        html = html + '<li class="item row">\
+                            <div class="col weight-day">\
+                                ' + day + '\
+                                <div class="weight-hour">' + (week[day].time ? week[day].time : 'No weight') + '</div>\
+                            </div>\
+                            <div class="col weight-number">\
+                                ' + (week[day].weight ? week[day].weight.toFixed(1) : '') + week[day].unit + '\
+                                ' + (week[day].weight ? '' : '<span>-</span>') + '\
+                            </div>\
+                            <div class="col weight-differance ' + (week[day].differance > 0 ? 'goal-positive' : (week[day].differance === 0 ? '' : 'goal-negative')) + '">\
+                                ' + (week[day].differance ? week[day].differance.toFixed(1) : '0') + week[day].unit + '\
+                                <div class="differance-text">\
+                                    From last ' + day + '\
+                                </div>\
+                            </div>\
+                        </li>';
+                    }
+                }
+                
+            html = html + '</ul>\
+            <div class="average">\
+                ' + (week["average"] ? week["average"].toFixed(1) : '0') + $rootScope.user.profile.weight_unit + '\
+                <div class="average-text">Weekly Average</div>\
+            </div>\
+        </div>'; 
+
+        document.getElementById(week.id).innerHTML = html;
 
     }
-    
-    $scope.changeDay = function(direction){
-        console.log($scope.calendarSlider.slider);
-        if (direction === 1){
-            $timeout(function(){$scope.calendarSlider.slider.slideNext()})
-        }
-        else if(direction === -1){           
-            $timeout(function(){$scope.calendarSlider.slider.slidePrev()})
-        }
-    }
-    
-    $scope.goalInline = function(differance){
-        if (!$rootScope.user){return 0;}
-        //differance is: last week weight - this weeks weight
-        if ($rootScope.user.goal.goal === "Maintaining" && (differance > 0 || differance < 0)){
-            return -1;
-        }
-        else if ($rootScope.user.goal.goal.indexOf("Cut") > -1){
-            if (differance < 0){
-                return 1;
-            }
-            else if (differance > 0){
-                return -1
-            }
-            return 0;
-        }
-        else if ($rootScope.user.goal.goal.indexOf("Bulk") > -1){
-            if (differance < 0){
-                return -1;
-            }
-            else if (differance > 0){
-                return 1
-            }
-            return 0;            
-        }
-        
-        return 1;
-    }
-
+ 
 
 
     $scope.formatCalendarDate = function(){
-        return moment().calendar(null, {
+        if (!$scope.calendarSlider.selectedDate){return;}
+        return $scope.calendarSlider.selectedDate.calendar(null, {
             sameDay: '[This Week]',
             nextDay: '[This Week]',
             nextWeek: '[Next Week]',
             lastDay: '[This Week]',
             lastWeek: '[Last Week]',
-            sameElse: '[Week Starting] DD/MM/YYYY'
+            sameElse: '[Week Of] DD/MM/YYYY'
         });
     }  
     
+    
+    //stats stuff
+    
+    $scope.getStats = function(){
+        MainService.getWeightStats().then(function(data){
+            console.log(data);
+            $scope.bwChartConfig.series[0].data = $scope.formatStats(data.bodyweights);
+            $scope.macroChartConfig.series[0].data = $scope.formatPieStats(data.macros);
+        });
+    } 
+    
+    $scope.formatStats = function(data){
+        var formatted = [];
+        for (var index in data){
+            var stat = data[index];
+            var date = new Date(stat.created_at);
+            formatted.push([date.getTime(), stat.weight]);
+        }
+        return formatted.sort(function(a, b){
+            return a[0] - b[0];
+        });
+    } 
+    
+    $scope.formatPieStats = function(data){
+        console.log(data);
+        return [
+            {name:"Carbohydrates",y:data.carbohydrates},
+            {name:"Fat",y:data.fat},
+            {name:"Protein",y:data.protein}
+        ];
+    }     
     
     $scope.bwChartConfig = {
         options: {
@@ -588,7 +709,7 @@ angular.module('app.controllers', [])
             data: [],
             showInLegend: false, 
             name: "Bodyweight",
-            color: '#de4223'
+            color: '#69cf8d'
         }],
         title: {
             text: null
@@ -605,8 +726,21 @@ angular.module('app.controllers', [])
         },                
         loading: false
     }   
+
+     Highcharts.getOptions().plotOptions.pie.colors = (function () {
+        var colors = [],
+            base = '#69cf8d',
+            i;
+
+        for (i = 0; i < 10; i += 1) {
+            // Start out with a darkened base color (negative brighten), and end
+            // up with a much brighter color
+            colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+        }
+        return colors;
+    }());   
     
-    $scope.bwPieChartConfig =   {   
+    $scope.macroChartConfig =   {   
         options:{
         chart: {
             plotBackgroundColor: null,
@@ -616,7 +750,7 @@ angular.module('app.controllers', [])
         },
 
         tooltip: {
-            pointFormat: 'Total Volume:<b>{point.y:.0f}</b><br>{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: 'Macro Percentage:<b>{point.y:.0f}</b><br>{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
             pie: {
@@ -642,35 +776,6 @@ angular.module('app.controllers', [])
             data: []
         }]
 
-    }      
-    
-    
-    var datepickerObjectPopup = {
-          titleLabel: 'Copy Sets To Date', //Optional
-          todayLabel: 'Today', //Optional
-          showTodayButton:true,
-          closeLabel: 'Close', //Optional
-          setLabel: 'Copy', //Optional
-          errorMsgLabel : 'Please select date.', //Optional
-          todayButtonType : 'date-picker-button', //Optional
-          closeButtonType : 'date-picker-button', //Optional
-          setButtonType : 'button-assertive date-picker-button', //Optional
-          modalHeaderColor:'bar-positive', //Optional
-          modalFooterColor:'bar-positive', //Optional
-          templateType:'popup', //Optional
-          mondayFirst: true, //Optional
-          disabledDates:[], //Optional
-          callback: function (val) { //Optional
-              if (val){
-              }           
-          }
-        };  
-        
-    $scope.openDatePicker = function(){
-      ionicDatePicker.openDatePicker(datepickerObjectPopup);
-    };     
-    
-    
-
+    }   
  
  });

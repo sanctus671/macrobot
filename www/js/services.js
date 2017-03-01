@@ -286,6 +286,39 @@ angular.module('app.services', [])
         return deferred.promise;         
     }
     
+    this.getWeights = function(date, initial){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}  
+        $http.get(API_URL + "/bodyweights?token=" + token + "&selected_date=" + date + (initial ? "&limit=3" : ""))
+        .success(function(data) { 
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }  
+    
+    this.getWeightStats = function(){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}  
+        $http.get(API_URL + "/bodyweight/stats?token=" + token)
+        .success(function(data) { 
+            console.log(data);
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }     
+    
 })
 
 
