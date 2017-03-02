@@ -47,7 +47,14 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
         if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         }
-
+        if (window.StatusBar) {
+            if (ionic.Platform.isAndroid()) {
+                StatusBar.backgroundColorByHexString("#37794a");
+                } 
+            else {            
+                StatusBar.styleDefault();
+            }
+        }
 
         if (window.cordova){
             //$cordovaSQLite.deleteDB("offline.db");
