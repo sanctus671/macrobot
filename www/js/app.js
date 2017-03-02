@@ -7,6 +7,8 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
     
     $ionicPlatform.ready(function() {
         
+        
+        
         $rootScope.devicePlatform = ionic.Platform.platform();
 
         $rootScope.push = new Ionic.Push({});
@@ -47,7 +49,7 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
         }
         if (window.StatusBar) {
             if (ionic.Platform.isAndroid()) {
-                StatusBar.backgroundColorByHexString("#000");
+                StatusBar.backgroundColorByHexString("#004C3F");
                 } 
             else {            
                 StatusBar.styleDefault();
