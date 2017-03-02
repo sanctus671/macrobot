@@ -17,6 +17,16 @@
 <body ng-app="app" ng-clock>
 
     <ion-nav-view></ion-nav-view>
+    
+    <script>
+        onDeviceReady: function () {
+            if (window.cordova && window.StatusBar) {
+                if (window.cordova.platformId == 'android') {
+                    StatusBar.backgroundColorByHexString("#37794a");
+                }
+            }
+        }        
+        </script>
 
 <script src="js/libraries.min.js"></script>
 
