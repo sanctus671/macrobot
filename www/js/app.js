@@ -49,7 +49,7 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
         }
         if (window.StatusBar) {
             if (ionic.Platform.isAndroid()) {
-                StatusBar.backgroundColorByHexString("#004C3F");
+                StatusBar.backgroundColorByHexString("#37794a");
                 } 
             else {            
                 StatusBar.styleDefault();
