@@ -49,6 +49,8 @@
 	<preference name="ShowSplashScreenSpinner" value="false"/>
     <gap:plugin name="cordova-plugin-network-information" source="npm"/>
     <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>
+    
+    <preference name="StatusBarBackgroundColor" value="#004C3F"/>
 	
 	
 	<gap:plugin spec="https://github.com/litehelpers/Cordova-sqlite-legacy-build-support.git#master"/>
