@@ -504,7 +504,7 @@ angular.module('app.controllers', [])
             for (var index in data.previous_week){
                 var previousWeight = data.previous_week[index];
                 if (day === moment(previousWeight.created_at).format("dddd")){
-                    week[day].differance = previousWeight.weight - weight.weight;
+                    week[day].differance = weight.weight - previousWeight.weight;
                 }
             }
         }
