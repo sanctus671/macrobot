@@ -114,12 +114,12 @@
     <gap:splash gap:platform="android" src="resources/screen/android/screen-xhdpi-landscape.png" gap:qualifier="land-xhdpi"/>
     <gap:splash gap:platform="android" src="resources/screen/android/screen-xxhdpi-landscape.png" gap:qualifier="land-xxhdpi"/>
     <gap:splash gap:platform="android" src="resources/screen/android/screen-xxxhdpi-landscape.png" gap:qualifier="land-xxxhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/screen-ldpi-portait.png" gap:qualifier="port-ldpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/screen-mdpi-portait.png" gap:qualifier="port-mdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/screen-hdpi-portait.png" gap:qualifier="port-hdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/screen-xhdpi-portait.png" gap:qualifier="port-xhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxhdpi-portait.png" gap:qualifier="port-xxhdpi"/>
-    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxxhdpi-portait.png" gap:qualifier="port-xxxhdpi"/>	
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-ldpi-portrait.png" gap:qualifier="port-ldpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-mdpi-portrait.png" gap:qualifier="port-mdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-hdpi-portrait.png" gap:qualifier="port-hdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xhdpi-portrait.png" gap:qualifier="port-xhdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxhdpi-portrait.png" gap:qualifier="port-xxhdpi"/>
+    <gap:splash gap:platform="android" src="resources/screen/android/screen-xxxhdpi-portrait.png" gap:qualifier="port-xxxhdpi"/>	
 	
 	
 
