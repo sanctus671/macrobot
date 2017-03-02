@@ -660,8 +660,14 @@ angular.module('app.controllers', [])
     $scope.getStats = function(){
         MainService.getWeightStats().then(function(data){
             console.log(data);
+            $timeout(function(){
             $scope.bwChartConfig.series[0].data = $scope.formatStats(data.bodyweights);
-            $scope.macroChartConfig.series[0].data = $scope.formatPieStats(data.macros);
+            $scope.macroChartConfig.series[0].data = $scope.formatMacroStats(data.macros);
+            $scope.energyChartConfig.series[0].data = $scope.formatEnergyStats(data.macros);
+            $scope.bwChartConfig.options.chart.width = document.getElementById('graph-tab').offsetWidth - 20;
+            $scope.macroChartConfig.options.chart.width = document.getElementById('graph-tab').offsetWidth - 20;
+            $scope.energyChartConfig.options.chart.width = document.getElementById('graph-tab').offsetWidth - 20;
+        });
         });
     } 
     
@@ -677,19 +683,30 @@ angular.module('app.controllers', [])
         });
     } 
     
-    $scope.formatPieStats = function(data){
+    $scope.formatMacroStats = function(data){
         console.log(data);
         return [
             {name:"Carbohydrates",y:data.carbohydrates},
             {name:"Fat",y:data.fat},
             {name:"Protein",y:data.protein}
         ];
-    }     
+    }   
+    
+    $scope.formatEnergyStats = function(data){
+        var weeklyCardio = data.activity * data.activity_sessions;
+        var weeklyEenergy = (data.calories * 7) - weeklyCardio;
+        
+        return [
+            {name:"Base Calories",y:weeklyEenergy},
+            {name:"Activity",y:weeklyCardio}
+        ];
+    }    
     
     $scope.bwChartConfig = {
         options: {
             chart: {
                 type: 'line',
+                width:300,
                 zoomType: 'x',
                 resetZoomButton: {
                     position: {
@@ -701,7 +718,6 @@ angular.module('app.controllers', [])
                 },                  
                 spacingLeft: 0,
                 marginLeft:35,
-                height:150,
                 backgroundColor:"rgba(255,255,255,0)"
             }
         },
@@ -714,6 +730,7 @@ angular.module('app.controllers', [])
         title: {
             text: null
         },
+        credits:{"enabled":false},
         yAxis: {title:{text:"Weight"},allowDecimals:false},
         xAxis: {type: 'datetime',
                 dateTimeLabelFormats: { // don't display the dummy year
@@ -723,8 +740,8 @@ angular.module('app.controllers', [])
         tooltip: {
             //headerFormat: '<b>{series.name}</b><br>',
             //pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
-        },                
-        loading: false
+        },
+        loading: false       
     }   
 
      Highcharts.getOptions().plotOptions.pie.colors = (function () {
@@ -750,7 +767,7 @@ angular.module('app.controllers', [])
         },
 
         tooltip: {
-            pointFormat: 'Macro Percentage:<b>{point.y:.0f}</b><br>{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: '{series.name} (g): <b>{point.y:.0f}</b><br>{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
             pie: {
@@ -769,13 +786,53 @@ angular.module('app.controllers', [])
         title: {
             text: null
         },
+        credits:{"enabled":false},
         series: [{
-            name: 'Percentage of total volume',
+            name: 'Percentage of total macros',
             colorByPoint: true,
             borderWidth: 0,
             data: []
         }]
 
-    }   
+    }  
+    
+    $scope.energyChartConfig =   {   
+        options:{
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+
+        tooltip: {
+            pointFormat: '{series.name} (kcal):<b>{point.y:.0f}</b><br>{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        }        
+        },
+        title: {
+            text: null
+        },
+        credits:{"enabled":false},
+        series: [{
+            name: 'Percentage of total energy',
+            colorByPoint: true,
+            borderWidth: 0,
+            data: []
+        }]
+
+    }     
  
  });

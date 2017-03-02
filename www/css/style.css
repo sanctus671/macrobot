@@ -61,7 +61,13 @@ img {
     right: 15px;  
 }
 
+input[type=range] {
+  pointer-events: none;
+}
 
+input[type=range]::-webkit-slider-thumb {
+  pointer-events:auto;
+}
 
 
 /* Menu
@@ -76,11 +82,17 @@ img {
 .platform-android .bar:not(.bar-footer) .title {
  height:54px !important;
  line-height:48px !important;
+
 }
+
 
 .platform-android .bar:not(.bar-footer) .button{
         min-height: 54px !important;
     max-height:54px !important;
+}
+
+.platform-android .modal-button, .platform-android .modal-button2{
+        line-height: 42px;
 }
 
 .main-bar.bar:not(.bar-footer) .buttons-left .button:before{
@@ -545,6 +557,7 @@ color: white;
 .date-navigation{
       background-color: #ddd;
       padding: 5px;
+          white-space: nowrap;
 }
 
 .left, .right{
@@ -619,4 +632,44 @@ font-size: 24px;
     font-size:14px;
         color: rgba(0, 0, 0, 0.5);
             margin-top: 10px;
+}
+
+.calendar-tab{
+        padding-bottom: 80px;
+}
+
+/*stats */
+
+.graph-tab{
+    padding-bottom:100px;
+    max-width:375px;
+    position:relative;
+    background-color:white;
+}
+
+.graph-tab h2{
+    font-size: 24px;
+    text-align: center;
+    line-height: 34px;
+    font-weight: 300;
+padding:20px;    
+}
+
+.graph-tab .graph-container:not(:first-child) h2{
+    padding-bottom:0px;
+    margin-bottom:0px;
+}
+
+.graph-tab .graph-container:first-child{
+    padding-bottom:40px;
+}
+
+.graph-tab .graph-container:not(:first-child){
+    border-top:1px solid #ddd;
+        padding-top: 10px;
+}
+
+.chart-item{
+    margin:0 auto;
+    display:table;
 }

@@ -1,11 +1,11 @@
 <ion-modal-view>
-	<ion-header-bar class="bar-balanced">
+	<ion-header-bar class="bar-balanced" align-title="center">
 		<div class="modal-button" ng-click="calendarModal.hide()">Close</div>            
 		<h1 class="title modal-title">Calendar</h1>
 	</ion-header-bar>
 	<ion-content>
 
-        <div  ng-show="!activeTab || activeTab === 'calendar'">    
+        <div  ng-show="!activeTab || activeTab === 'calendar'" class="calendar-tab">    
             <div class="date-navigation">
                 <div class="left">
                     <a ng-click="changeDay(-1)">
@@ -31,15 +31,21 @@
             
         </div>
             
-            <div  ng-show="activeTab === 'graph'">
+            <div  ng-if="activeTab === 'graph'" class="graph-tab" id="graph-tab">
                 
-                <div class="line-graph">
-                    <highchart id="chart1" config="bwChartConfig"></highchart>
+            <div class="graph-container">    
+            <h2>Weigh Ins</h2>
+            <highchart class="chart-item" id="chart1" config="bwChartConfig"></highchart>
+            </div>
+
+                <div class="graph-container">  
+            <h2>Macro Breakdown</h2>
+            <highchart class="chart-item" id="chart2" config="macroChartConfig"></highchart>
                 </div>
-                <div class="pie-graph">    
-                    <highchart id="chart2" config="macroChartConfig"></highchart>
-                </div>
-              
+<div class="graph-container">  
+            <h2>Energy Breakdown</h2>
+            <highchart class="chart-item" id="chart2" config="energyChartConfig"></highchart>             
+</div>
             </div>
             
             
