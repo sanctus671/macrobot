@@ -1,2 +1,2 @@
 angular.module('app.config', [])
-.constant('API_URL', 'http://websites.localhost/macrobot/api/public/api')
+.constant('API_URL', 'http://taylorhamling.com/macrobot/api/public/api')
