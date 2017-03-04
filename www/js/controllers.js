@@ -261,7 +261,7 @@ angular.module('app.controllers', [])
     
     
     $scope.openAddWeight = function(){
-        $scope.popupWeight = {weight:$rootScope.user.bodyweight ? $rootScope.user.bodyweight.weight : $rootScope.user.last_bodyweight.weight};
+        $scope.popupWeight = {weight:$rootScope.user && $rootScope.user.bodyweight ? parseFloat($rootScope.user.bodyweight.weight) : parseFloat($rootScope.user.last_bodyweight.weight)};
         console.log("sdasd");
         SecuredPopups.show('show',{
             templateUrl: 'templates/popups/add-weight.html',
@@ -493,10 +493,10 @@ angular.module('app.controllers', [])
         var week = {average:0, id:id};
         for (var index in data.selected_week){
             var weight = data.selected_week[index];
-            week.average = week.average + weight.weight;
+            week.average = week.average + parseFloat(weight.weight);
             var day = moment(weight.created_at).format("dddd");
             week[day] = {
-                weight:weight.weight,
+                weight:parseFloat(weight.weight),
                 time:moment(weight.created_at).format("h:mma"),
                 unit:weight.unit,
                 differance:0
@@ -504,7 +504,7 @@ angular.module('app.controllers', [])
             for (var index in data.previous_week){
                 var previousWeight = data.previous_week[index];
                 if (day === moment(previousWeight.created_at).format("dddd")){
-                    week[day].differance = weight.weight - previousWeight.weight;
+                    week[day].differance = parseFloat(weight.weight) - parseFloat(previousWeight.weight);
                 }
             }
         }
@@ -616,11 +616,11 @@ angular.module('app.controllers', [])
                                 <div class="weight-hour">' + (week[day].time ? week[day].time : 'No weight') + '</div>\
                             </div>\
                             <div class="col weight-number">\
-                                ' + (week[day].weight ? week[day].weight.toFixed(1) : '') + week[day].unit + '\
+                                ' + (week[day].weight ? parseFloat(week[day].weight).toFixed(1) : '') + week[day].unit + '\
                                 ' + (week[day].weight ? '' : '<span>-</span>') + '\
                             </div>\
                             <div class="col weight-differance ' + (week[day].differance > 0 ? 'goal-positive' : (week[day].differance === 0 ? '' : 'goal-negative')) + '">\
-                                ' + (week[day].differance ? week[day].differance.toFixed(1) : '0') + week[day].unit + '\
+                                ' + (week[day].differance ? parseFloat(week[day].differance).toFixed(1) : '0') + week[day].unit + '\
                                 <div class="differance-text">\
                                     From last ' + day + '\
                                 </div>\
@@ -676,7 +676,7 @@ angular.module('app.controllers', [])
         for (var index in data){
             var stat = data[index];
             var date = new Date(stat.created_at);
-            formatted.push([date.getTime(), stat.weight]);
+            formatted.push([date.getTime(), parseFloat(stat.weight)]);
         }
         return formatted.sort(function(a, b){
             return a[0] - b[0];
@@ -686,15 +686,15 @@ angular.module('app.controllers', [])
     $scope.formatMacroStats = function(data){
         console.log(data);
         return [
-            {name:"Carbohydrates",y:data.carbohydrates},
-            {name:"Fat",y:data.fat},
-            {name:"Protein",y:data.protein}
+            {name:"Carbohydrates",y:parseFloat(data.carbohydrates)},
+            {name:"Fat",y:parseFloat(data.fat)},
+            {name:"Protein",y:parseFloat(data.protein)}
         ];
     }   
     
     $scope.formatEnergyStats = function(data){
-        var weeklyCardio = data.activity * data.activity_sessions;
-        var weeklyEenergy = (data.calories * 7) - weeklyCardio;
+        var weeklyCardio = parseFloat(data.activity) * parseFloat(data.activity_sessions);
+        var weeklyEenergy = (parseFloat(data.calories) * 7) - weeklyCardio;
         
         return [
             {name:"Base Calories",y:weeklyEenergy},

@@ -24,8 +24,33 @@ angular.module('app.services', [])
         if (!token){deferred.reject("No token");}
         $http.get(API_URL + '/user?token=' + token)
         .success(function(data) {
+            console.log(data);
+            data.user.profile.age = parseFloat(data.user.profile.age);
+            data.user.profile.bodyfat = parseFloat(data.user.profile.bodyfat);
+            if (data.user.macros){
+                data.user.macros.activity = parseFloat(data.user.macros.activity);
+                data.user.macros.activity_sessions = parseFloat(data.user.macros.activity_sessions);
+                data.user.macros.calories = parseFloat(data.user.macros.calories);
+                data.user.macros.carbohydrates = parseFloat(data.user.macros.carbohydrates);
+                data.user.macros.protein = parseFloat(data.user.macros.protein);
+                data.user.macros.fat = parseFloat(data.user.macros.fat);
+                
+            }
+            
+            if (data.user.last_macros){
+                data.user.last_macros.activity = parseFloat(data.user.last_macros.activity);
+                data.user.last_macros.activity_sessions = parseFloat(data.user.last_macros.activity_sessions);
+                data.user.last_macros.calories = parseFloat(data.user.last_macros.calories);
+                data.user.last_macros.carbohydrates = parseFloat(data.user.last_macros.carbohydrates);
+                data.user.last_macros.protein = parseFloat(data.user.last_macros.protein);
+                data.user.last_macros.fat = parseFloat(data.user.last_macros.fat);
+                
+            }            
+            
             var userData = data.user;
+            
             $rootScope.user = userData;
+            console.log(data);
             AuthService.setUser(userData);
             if (!noBroadcast){$rootScope.$broadcast("userDataSet");}
             deferred.resolve(data.user);
