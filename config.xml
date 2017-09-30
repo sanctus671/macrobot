@@ -73,7 +73,10 @@
     <gap:plugin name="cordova-plugin-file-transfer" source="npm" version="1.5.1"/>	
 	
     <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />	
-
+    
+    
+    <gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>	
+    
 	<gap:plugin name="cordova-plugin-whitelist" source="npm"/>	
 	
 	

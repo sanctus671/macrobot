@@ -72,8 +72,13 @@
         </div>   
         
         
-        <div ng-show="form.currentForm === 'profile'">
-            <form class="login-form" ng-submit="saveProfile()">
+        <div ng-show="form.currentForm === 'loading'" class="profile-container spinner-container">
+            <ion-spinner class="spinner-balanced"></ion-spinner>
+        </div>
+        
+        
+        <div ng-show="form.currentForm === 'profile'" class="profile-container">
+            <form class="login-form profile-form" ng-submit="saveProfile()">
                 <div class="list">
                     <div class="item gender-select">
                         <div>Select Your Gender</div>
@@ -83,9 +88,12 @@
                     <label class="item item-input">
                       <input type="number" placeholder="Age" ng-model="profile.age">
                     </label>
-                    <label class="item item-input">
-                      <input type="number" placeholder="Bodyfat" ng-model="profile.bodyfat">%
-                    </label>    
+                    <div class="bodyfat-input">
+                        <label class="item item-input">
+                          <input type="number" placeholder="Bodyfat" ng-model="profile.bodyfat">%
+                        </label> 
+                        <p>Rough estimate only. Get help <a ng-click="openLink('https://www.ruled.me/visually-estimate-body-fat-percentage/')">here</a>.</p>
+                    </div>
                     <div class="weight-select">
                         <label class="item item-input">
                           <input type="number" placeholder="Weight" ng-model="profile.weight">
@@ -97,6 +105,23 @@
                           </select>
                         </label>  
                     </div>
+                    
+                    <div class="macro-range activity-level">
+                        <p>Activity Level</p>
+                        <div class="item range">
+                          <i class="icon ion-ios-minus" ng-click="activityAdd(-1)"></i>
+                          <input type="range" name="activity_sessions"  ng-model="profile.activity_level" ng-min="0" ng-max="4">
+                          <i class="icon ion-ios-plus" ng-click="activityAdd(1)"></i>
+                        </div>
+
+                        <div class="range-text">
+                            <span ng-if="profile.activity_level === 0 || profile.activity_level === '0'">Little or no exercise, desk job</span>
+                            <span ng-if="profile.activity_level === 1 || profile.activity_level === '1'">Light exercise/sports 1-3 days/week</span>
+                            <span ng-if="profile.activity_level === 2 || profile.activity_level === '2'">Moderate exercise/sports 3-5 days/week</span>
+                            <span ng-if="profile.activity_level === 3 || profile.activity_level === '3'">Hard exercise/sports 6-7 days/week</span>
+                            <span ng-if="profile.activity_level === 4 || profile.activity_level === '4'">Hard daily exercise/sports & physical job or 2X day training, i.e. marathon, contest etc.</span>
+                        </div>
+                    </div>                    
                     <div class="item login-button">
                         <button class="button button-block button-balanced">
                           Get Macros
@@ -110,12 +135,6 @@
 
             </form>
 
-        
-            <div class="secondary-action">
-                <button class="button button-block button-balanced" ui-sref="app.home">
-                  Skip
-                </button>              
-            </div>
         </div>         
         
         

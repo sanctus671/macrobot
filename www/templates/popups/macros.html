@@ -14,65 +14,82 @@
 
 <div class="macro-range">
     <p>Weekly cardio sessions</p>
+    
+    
+    <div class="range-text">
+          {{popupMacros.activity_sessions | number: 0}}
+    </div>    
     <div class="item range">
       <i class="icon ion-ios-minus" ng-click="rangeAddMacro('activity_sessions', -1)"></i>
       <input type="range" name="weight"  ng-model="popupMacros.activity_sessions" ng-min="{{(popupMacros.activity_sessions - 3) > 0 ? popupMacros.activity_sessions - 3 : 0}}" ng-max="{{popupMacros.activity_sessions + 3}}" ng-change="adjustMacros('activity_sessions', false)">
       <i class="icon ion-ios-plus" ng-click="rangeAddMacro('activity_sessions', 1)"></i>
     </div>
 
-    <div class="range-text">
-          {{popupMacros.activity_sessions | number: 0}}
-    </div>
+
 </div>
 
 <div class="macro-range">
     <p>Calories per cardio session</p>
+    
+    <div class="range-text">
+          {{popupMacros.activity | number: 0}}
+    </div>    
+    
     <div class="item range">
       <i class="icon ion-ios-minus" ng-click="rangeAddMacro('activity', -10)"></i>
       <input type="range" name="weight"  ng-model="popupMacros.activity" ng-min="{{(popupMacros.activity - 100) > 0 ? popupMacros.activity - 100 : 0}}" ng-max="{{popupMacros.activity + 100}}" ng-change="adjustMacros('activity', false)">
       <i class="icon ion-ios-plus" ng-click="rangeAddMacro('activity', 10)"></i>
     </div>
 
-    <div class="range-text">
-          {{popupMacros.activity | number: 0}}
-    </div>
+
 </div>
 
 <div class="macro-range">
     <p>Fat per day</p>
+    
+    
+    <div class="range-text">
+          {{popupMacros.fat | number: 0}}g
+    </div>
+    
     <div class="item range">
       <i class="icon ion-ios-minus" ng-click="rangeAddMacro('fat', -1)"></i>
       <input type="range" name="fat"  ng-model="popupMacros.fat" ng-min="{{(popupMacros.fat - 5) > 0 ? popupMacros.fat - 5 : 0}}" ng-max="{{popupMacros.fat + 5}}" ng-change="adjustMacros('fat', false)">
       <i class="icon ion-ios-plus" ng-click="rangeAddMacro('fat', 1)"></i>
     </div>
 
-    <div class="range-text">
-          {{popupMacros.fat | number: 0}}g
-    </div>
+
 </div>
 
 <div class="macro-range">
     <p>Carbohydrates per day</p>
+    
+    
+    <div class="range-text">
+          {{popupMacros.carbohydrates |  number: 0}}g
+    </div>    
+    
     <div class="item range">
       <i class="icon ion-ios-minus" ng-click="rangeAddMacro('carbohydrates', -1)"></i>
       <input type="range" name="carbohydrates"  ng-model="popupMacros.carbohydrates" ng-min="{{(popupMacros.carbohydrates - 20) > 0 ? popupMacros.carbohydrates - 20 : 0}}" ng-max="{{popupMacros.carbohydrates + 20}}" ng-change="adjustMacros('carbohydrates', false)">
       <i class="icon ion-ios-plus" ng-click="rangeAddMacro('carbohydrates', 1)"></i>
     </div>
 
-    <div class="range-text">
-          {{popupMacros.carbohydrates |  number: 0}}g
-    </div>
+
 </div>
 
 <div class="macro-range">
     <p>Protein per day</p>
+    
+    <div class="range-text">
+          {{popupMacros.protein |  number: 0}}g
+    </div>    
+    
     <div class="item range">
       <i class="icon ion-ios-minus" ng-click="rangeAddMacro('protein', -1)"></i>
       <input type="range" name="protein"  ng-model="popupMacros.protein" ng-min="{{(popupMacros.protein - 8) > 0 ? popupMacros.protein - 8 : 0}}" ng-max="{{popupMacros.protein + 8}}" ng-change="adjustMacros('protein', false)">
       <i class="icon ion-ios-plus" ng-click="rangeAddMacro('protein', 1)"></i>
     </div>
 
-    <div class="range-text">
-          {{popupMacros.protein |  number: 0}}g
-    </div>
+
 </div>

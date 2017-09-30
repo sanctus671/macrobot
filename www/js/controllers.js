@@ -106,15 +106,18 @@ angular.module('app.controllers', [])
         forgotpassword:[]
     };
     $scope.user = {email:"", password:"", confirm_password:""}
-    $scope.profile = {first_name:"", last_name:"", avatar:"", gender:"", age:"", bodyfat:"",energy_unit:"kcal",weight_unit:"lbs"}
+    $scope.profile = {first_name:"", last_name:"", avatar:"", gender:"", age:"", bodyfat:"",energy_unit:"kcal",weight_unit:"lbs", activity_level:2}
 
     $scope.login = function(){
+        $scope.form.currentForm = "loading";
         AuthService.login($scope.user).then(function(){
+            $scope.form.currentForm = "login";
             $scope.user = {email:"", password:"", confirm_password:""};
             $scope.error.login = "";
             $state.go("app.home");
         },function(data){
             console.log(data);
+            $scope.form.currentForm = "login";
             if (data.error && data.error.errors){
                 $scope.error.login = data.error.errors;
             }
@@ -125,12 +128,14 @@ angular.module('app.controllers', [])
     }
     
     $scope.register = function(){
+        $scope.form.currentForm = "loading";
         AuthService.register($scope.user).then(function(data){
             $scope.user = {email:"", password:"", confirm_password:""};
             $scope.error.register = [];            
             $scope.form.currentForm = 'profile';
             
         },function(data){
+            $scope.form.currentForm = "register";
             if (data.error && data.error.errors){
                 $scope.error.register = data.error.errors;
             }
@@ -141,10 +146,13 @@ angular.module('app.controllers', [])
     }
     
     $scope.saveProfile = function(){
+        $scope.form.currentForm = "loading";
         $scope.profile.cal_day = moment().format("dddd");
         MainService.updateProfile($scope.profile).then(function(){
+            $scope.form.currentForm = "login";
             $state.go("app.home");            
         },function(data){
+            $scope.form.currentForm = "profile";
             console.log(data)
         })
     }
@@ -169,6 +177,20 @@ angular.module('app.controllers', [])
         })
     }
     
+    
+    $scope.activityAdd = function(amount){
+        $scope.profile.activity_level = parseInt($scope.profile.activity_level);
+        if ((amount > 0 && $scope.profile.activity_level > 3) || (amount < 0 && $scope.profile.activity_level < 1)){return;}
+        $scope.profile.activity_level = $scope.profile.activity_level + amount;
+    }   
+    
+    $scope.openLink = function (link) {
+        window.open(link, "_system");
+      
+    }    
+    
+    
+    
     $scope.$on('$ionicView.loaded', function() { //hide splash screen if user is supposed to be on login page, otherwise let the home ctrl deal with it       
       ionic.Platform.ready( function() {
         AuthService.userIsLoggedIn().then(function(response){$state.go('app.home')},function(response){
@@ -190,12 +212,19 @@ angular.module('app.controllers', [])
     
     $scope.weighIn = "";
  
+ 
+    document.body.classList.add("is-premium");
+ 
 
     $scope.$on('$ionicView.loaded', function() {
       ionic.Platform.ready( function() {         
             if(navigator && navigator.splashscreen) {$timeout(function(){navigator.splashscreen.hide();},1000);}         
       });
-    });  
+    }); 
+    
+    $scope.$on("$ionicView.enter", function(event, data){
+        $scope.doRefresh();
+    })
     
     $scope.doRefresh = function(){
         AuthService.getUserData(true).then(function(){
@@ -241,6 +270,20 @@ angular.module('app.controllers', [])
       }
     }    
     
+    $scope.updateGoal = function(goal){
+        $rootScope.user.goal.goal = goal;
+        $scope.slider.slideTo($scope.goals.indexOf($rootScope.user.goal.goal), 0);
+        $scope.saveGoal = true;      
+    }
+    
+    $scope.changeGoal = function(direction){
+        var currentIndex = $scope.goals.indexOf($rootScope.user.goal.goal);
+        if (currentIndex <= 0 || currentIndex >= ($scope.goals.length - 1)){return;}
+        var newIndex = currentIndex + direction;
+        $rootScope.user.goal.goal = $scope.goals[newIndex];
+        $scope.slider.slideTo($scope.goals.indexOf($rootScope.user.goal.goal), 0);
+        $scope.saveGoal = true;        
+    }
 
 
     $scope.progressBar = {
@@ -253,6 +296,9 @@ angular.module('app.controllers', [])
         if (macros){
             return moment(macros.created_at).from(moment());
         }
+        else {
+            return "never"
+        }
     }    
     
     $scope.dayOfWeekAsInteger = function(day) {
@@ -261,6 +307,9 @@ angular.module('app.controllers', [])
     
     
     $scope.openAddWeight = function(){
+        if (!$rootScope.user.bodyweight){
+            $rootScope.user.bodyweight = {weight:0, unit:"kg"};
+        }
         $scope.popupWeight = {weight:$rootScope.user && $rootScope.user.bodyweight ? parseFloat($rootScope.user.bodyweight.weight) : parseFloat($rootScope.user.last_bodyweight.weight)};
         console.log("sdasd");
         SecuredPopups.show('show',{
@@ -333,6 +382,17 @@ angular.module('app.controllers', [])
     
     
     $scope.openEditMacros = function(){
+        console.log($rootScope.user.macros);
+        if (!$rootScope.user.macros){
+            $rootScope.user.macros = {
+                calories : 0,
+                activity_sessions : 0,
+                activity : 0,
+                fat : 0,
+                carbohydrates : 0,
+                protein : 0
+            }
+        }
         $scope.popupMacros = angular.copy($rootScope.user.macros);
         $scope.oldPopupMacros = angular.copy($scope.popupMacros);
         SecuredPopups.show('show',{
@@ -631,7 +691,7 @@ angular.module('app.controllers', [])
                 
             html = html + '</ul>\
             <div class="average">\
-                ' + (week["average"] ? week["average"].toFixed(1) : '0') + $rootScope.user.profile.weight_unit + '\
+                ' + (week["average"] ? week["average"].toFixed(1) : '0') + ($rootScope.user.profile.weight_unit ? $rootScope.user.profile.weight_unit : "kg") + '\
                 <div class="average-text">Weekly Average</div>\
             </div>\
         </div>'; 
@@ -697,8 +757,8 @@ angular.module('app.controllers', [])
         var weeklyEenergy = (parseFloat(data.calories) * 7) - weeklyCardio;
         
         return [
-            {name:"Base Calories",y:weeklyEenergy},
-            {name:"Activity",y:weeklyCardio}
+            {name:"Base Calories (weekly)",y:weeklyEenergy},
+            {name:"Activity (weekly)",y:weeklyCardio}
         ];
     }    
     

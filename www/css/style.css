@@ -69,6 +69,37 @@ input[type=range]::-webkit-slider-thumb {
   pointer-events:auto;
 }
 
+.spinner.spinner-balanced svg {
+  stroke:#37794a;
+  fill:#37794a;
+}
+
+
+/* Jivo
+==================================*/
+
+    jdiv.logoIconCloud_q-._iconDark_2a svg, jdiv.logoIconCloud_q-._iconDark_2a svg path {
+        fill: #69cf8d!important;
+}
+
+.iconWrap_2n._animationJivoIcon_30{
+    animation:none !important;
+}
+
+.button_1O {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26) !important;
+    
+}
+
+._show_1e.wrap_mW{
+    z-index:10 !important;
+        display: none;
+}
+
+.is-premium ._show_1e.wrap_mW{
+    display:block;
+}
+
 
 /* Menu
 ==================================*/
@@ -252,6 +283,7 @@ input[type=range]::-webkit-slider-thumb {
     color: rgba(255,255,255,0.5);
     font-size:18px;
     padding-bottom:0px;
+        margin-top: 10px;
 }
 
 .gender-select > div{
@@ -301,15 +333,102 @@ right: 5px;
     color: rgba(255,255,255, 0.5);  
 }
 
+.login-form.profile-form{
+    max-height:none;
+}
+
+.login-screen  .profile-container .secondary-action{
+    margin-top:0px;
+}
+
+
+
+.activity-level.macro-range{
+    
+    margin-top:15px;
+}
+
+.activity-level.macro-range .item{
+    
+    padding-top:0px;
+}
+
+.activity-level.macro-range .range-text{
+    color: White;
+    font-size: 12px;
+    margin-top: -20px;    
+}
+
+.activity-level i{
+    color:rgba(255,255,255,0.5);
+}
+
+.activity-level i.activated{
+    color:White;
+}
+
+
+.activity-level p{
+    color:rgba(255,255,255,0.5);
+        font-size: 18px;
+}
+
+
+.activity-level .range input{
+    background: linear-gradient(to right,rgba(255,255,255,0.5) 0,rgba(255,255,255,0.5) 100%);
+ background-position: center;
+    background-size: 99% 2px;
+    background-repeat: no-repeat;   
+}
+
+.bodyfat-input p{
+margin-bottom: 0px;
+    color: white;
+    font-size: 12px;    
+}
+
+.bodyfat-input p a{
+ color:White;   
+ text-decoration: underline;
+}
+
+.profile-container.spinner-container{
+    margin-top:30px;
+}
 
 /* Home
 ==================================*/
+
+
+.goal-slider-container{
+    position:relative;
+}
+
+.goal-slider-container .slider-arrow{
+    position: absolute;
+    top: 0px;
+    line-height: 30px;
+    background-color: #dddddd;
+    padding-right: 5px;
+    padding-left: 5px;
+    z-index:2;
+}
+
+.goal-slider-container .slider-arrow.back{
+    left:0;
+}
+
+.goal-slider-container .slider-arrow.next{
+    right:0;
+}
+
 
 .goal-slider{
     background-color: #ddd;
     height: 30px;
     padding: 5px;
 }
+
 
 .goal-slider .swiper-container-horizontal>.swiper-pagination{
     display:none;
@@ -443,11 +562,15 @@ font-size: 18px;
 
 .range-text{
     text-align:center;
-    margin-top:-10px;
+        margin-bottom: -10px;
 }
 
 .macro-range{
     margin-bottom:20px;
+}
+
+.macro-range .range-text{
+        margin-top: 10px;
 }
 
 .macro-range p{
@@ -642,7 +765,7 @@ font-size: 24px;
 
 .graph-tab{
     padding-bottom:100px;
-    max-width:375px;
+    max-width:100%;
     position:relative;
     background-color:white;
 }

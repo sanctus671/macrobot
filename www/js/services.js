@@ -56,6 +56,7 @@ angular.module('app.services', [])
             deferred.resolve(data.user);
         })
         .error(function(data) {
+            if (data.error && data.error.status_code === 401){AuthService.logout();$state.go("login")}
             deferred.reject(data);
         });
 
@@ -201,6 +202,7 @@ angular.module('app.services', [])
             deferred.resolve(data);
         })
         .error(function(data) {
+            if (data.error && data.error.status_code === 401){AuthService.logout();$state.go("login")}
             deferred.reject(data);
         });
 
@@ -320,6 +322,7 @@ angular.module('app.services', [])
             deferred.resolve(data);
         })
         .error(function(data) {
+            if (data.error && data.error.status_code === 401){AuthService.logout();$state.go("login")}
             deferred.reject(data);
         });
 
@@ -337,6 +340,7 @@ angular.module('app.services', [])
             deferred.resolve(data);
         })
         .error(function(data) {
+            if (data.error && data.error.status_code === 401){AuthService.logout();$state.go("login")}
             deferred.reject(data);
         });
 

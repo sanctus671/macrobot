@@ -4,12 +4,28 @@
             pulling-text="Pull to sync..."
             on-refresh="doRefresh()">
         </ion-refresher>
-     
-  <ion-slides  options="goalSlideOptions" slider="data.slider" class="goal-slider">
-    <ion-slide-page ng-repeat="goal in goals">
-      <div class="box">{{goal}}</div>
-    </ion-slide-page>      
-  </ion-slides>    
+<div class="goal-slider-container">  
+    
+      <div class="slider-arrow back" ng-click="changeGoal(-1)" ng-show="user.goal.goal !== 'Cut Aggressively'">
+          <i class="icon ion-chevron-left"></i>
+      </div>    
+    
+    <ion-slides  options="goalSlideOptions" slider="data.slider" class="goal-slider">
+
+      <ion-slide-page ng-repeat="goal in goals" ng-click="updateGoal(goal)">
+        <div class="box">{{goal}}</div>
+      </ion-slide-page>   
+
+
+    </ion-slides>  
+
+
+      <div class="slider-arrow next" ng-click="changeGoal(1)" ng-show="user.goal.goal !== 'Bulk Aggressively'">
+          <i class="ion-chevron-right"></i>
+      </div>  
+
+    
+</div>
         
         
     <div class="weight-progress">
@@ -46,15 +62,15 @@
     <div class="macros">
         <div class="row">
           <div class="col">
-              <div class="number">{{user.macros.fat | number : 0}}g</div>
+              <div class="number">{{user.macros.fat ? user.macros.fat : 0 | number : 0}}g</div>
               <div class="text">fat</div>
           </div>
           <div class="col">
-              <div class="number">{{user.macros.carbohydrates | number : 0}}g</div>
+              <div class="number">{{user.macros.carbohydrates ? user.macros.carbohydrates : 0 | number : 0}}g</div>
               <div class="text">carbs</div>
           </div>
           <div class="col">
-              <div class="number">{{user.macros.protein | number : 0}}g</div>
+              <div class="number">{{user.macros.protein ? user.macros.protein : 0 | number : 0}}g</div>
               <div class="text">protein</div>
           </div>
         </div>        
@@ -64,7 +80,7 @@
             <div class="card">
               <div class="item item-text-wrap item-icon-left item-icon-right">
                   <i class="icon ion-ios-bolt"></i>
-                <h2>{{user.macros.calories | number : 0}} daily calories</h2>
+                <h2>{{user.macros.calories ? user.macros.calories : 0 | number : 0}} daily calories</h2>
                 <p ng-if="user.last_macros && user.macros.calories !== user.last_macros.calories">
                     <span ng-if="user.macros.calories > user.last_macros.calories">Increased </span>
                     <span ng-if="user.macros.calories < user.last_macros.calories">Decreased </span>
@@ -77,7 +93,7 @@
             <div class="card">
               <div class="item item-text-wrap item-icon-left item-icon-right">
                   <i class="icon ion-android-bicycle"></i>
-                <h2>{{user.macros.activity_sessions}}x{{user.macros.activity}} weekly cardio sessions</h2>
+                <h2>{{user.macros.activity_sessions ? user.macros.activity_sessions : 0}}x{{user.macros.activity ? user.macros.activity : 0}} weekly cardio sessions</h2>
                 <p ng-if="user.last_macros && (user.macros.activity_sessions !== user.last_macros.activity_sessions && user.macros.activity !== user.last_macros.activity)">
                     <span ng-if="user.macros.activity_sessions >= user.last_macros.activity_sessions">+</span><span ng-if="user.macros.activity_sessions < user.last_macros.activity_sessions">-</span>{{user.macros.activity_sessions - user.last_macros.activity_sessions | number : 0}} 
                     session<span ng-if="(user.macros.activity_sessions - user.last_macros.activity_sessions) !== 1">s</span> 
@@ -86,7 +102,7 @@
                     calories
                 </p>
                 <p ng-if="user.macros.activity_sessions === user.last_macros.activity_sessions && user.macros.activity === user.last_macros.activity">Unchanged from {{formatDate(user.macros)}}.</p>              
-                <p ng-if="!user.last_macros">This is the default activity rate.</p>
+                <p ng-if="!user.last_macros">This is your initial activity rate.</p>
                     <i class="icon ion-edit" ng-click="openEditMacros()"></i>
               </div>
             </div>              
@@ -94,7 +110,7 @@
             <div class="card">
               <div class="item item-text-wrap item-icon-left item-icon-right">
                   <i class="icon ion-pizza"></i>
-                <h2>{{user.macros.fat | number : 0}}g of fat per day</h2>
+                <h2>{{user.macros.fat ? user.macros.fat : 0 | number : 0}}g of fat per day</h2>
                 <p ng-if="user.last_macros && user.macros.fat !== user.last_macros.fat">
                     <span ng-if="user.macros.fat > user.last_macros.fat">Increased </span>
                     <span ng-if="user.macros.fat < user.last_macros.fat">Decreased </span>
@@ -109,7 +125,7 @@
             <div class="card">
               <div class="item item-text-wrap item-icon-left item-icon-right">
                   <i class="icon ion-icecream"></i>
-                <h2>{{user.macros.carbohydrates | number : 0}}g of carbohydrates per day</h2>
+                <h2>{{user.macros.carbohydrates ? user.macros.carbohydrates : 0 | number : 0}}g of carbohydrates per day</h2>
                 <p ng-if="user.last_macros && user.macros.carbohydrates !== user.last_macros.carbohydrates">
                     <span ng-if="user.macros.carbohydrates > user.last_macros.carbohydrates">Increased </span>
                     <span ng-if="user.macros.carbohydrates < user.last_macros.carbohydrates">Decreased </span>
@@ -124,7 +140,7 @@
             <div class="card">
               <div class="item item-text-wrap item-icon-left item-icon-right">
                   <i class="icon ion-egg"></i>
-                <h2>{{user.macros.protein | number : 0}}g of protein per day</h2>
+                <h2>{{user.macros.protein ? user.macros.protein : 0 | number : 0}}g of protein per day</h2>
                 <p ng-if="user.last_macros && user.macros.protein !== user.last_macros.protein">
                     <span ng-if="user.macros.protein > user.last_macros.protein">Increased </span>
                     <span ng-if="user.macros.protein < user.last_macros.protein">Decreased </span>
@@ -144,3 +160,6 @@
             
 
 </ion-view>
+
+
+

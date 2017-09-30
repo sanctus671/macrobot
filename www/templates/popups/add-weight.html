@@ -1,9 +1,11 @@
+<div class="range-text">
+      {{popupWeight.weight | number:1}}{{user.bodyweight ? user.bodyweight.unit : user.last_bodyweight.unit}}
+</div>
+
 <div class="item range">
   <i class="icon ion-ios-minus" ng-click="rangeAddWeight(-0.1)"></i>
   <input type="range" name="weight"  ng-model="popupWeight.weight" ng-min="{{(popupWeight.weight - 20) > 0 ? popupWeight.weight - 20 : 0}}" ng-max="{{popupWeight.weight + 20}}">
   <i class="icon ion-ios-plus" ng-click="rangeAddWeight(0.1)"></i>
 </div>
 
-<div class="range-text">
-      {{popupWeight.weight | number:1}}{{user.bodyweight ? user.bodyweight.unit : user.last_bodyweight.unit}}
-</div>
+

@@ -11,7 +11,7 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
         
         $rootScope.devicePlatform = ionic.Platform.platform();
 
-        $rootScope.push = new Ionic.Push({});
+        //$rootScope.push = new Ionic.Push({});
 
         
         AuthService.userIsLoggedIn().then(function(response){
@@ -20,25 +20,10 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
                 
                 AuthService.getUserData().then(function(data){
                     $rootScope.user = data;
-                    if (window.cordova){
-                        $rootScope.push.register(function(token) {
 
-                            $rootScope.push.saveToken(token);  // persist the token in the Ionic Platform
-                            if (token){
-                                AuthService.saveToken(token.token);
-                            }          
-                        });   
-                    }
                 },function(data){});   
             }
-            else{
-                $rootScope.push.register(function(token) {
-
-                    $rootScope.push.saveToken(token);  // persist the token in the Ionic Platform
-                    if (token){
-                        AuthService.saveToken(token.token);
-                    }          
-                });                 
+            else{                 
             }
 
         },function(response){$state.go('login');});    
