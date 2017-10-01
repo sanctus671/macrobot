@@ -230,7 +230,6 @@ angular.module('app.controllers', [])
     $scope.weighIn = "";
  
  
-    
  
 
     $scope.$on('$ionicView.loaded', function() {
