@@ -1,14 +1,17 @@
 <div class="macro-range">
     <p>Daily calories</p>
+    
+    <div class="range-text">
+          {{popupMacros.calories |  number: 0}}
+    </div>    
+    
     <div class="item range">
       <i class="icon ion-ios-minus" ng-click="rangeAddMacro('calories', -10)"></i>
       <input type="range" name="calories"  ng-model="popupMacros.calories" ng-min="{{(popupMacros.calories - 100) > 0 ? popupMacros.calories - 100 : 0}}" ng-max="{{popupMacros.calories + 100}}" ng-change="adjustMacros('calories', false)">
       <i class="icon ion-ios-plus" ng-click="rangeAddMacro('calories', 10)"></i>
     </div>
 
-    <div class="range-text">
-          {{popupMacros.calories |  number: 0}}
-    </div>
+
 </div>
 
 

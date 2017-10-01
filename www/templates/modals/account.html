@@ -73,10 +73,23 @@
               <div class="item item-divider">
                 Account
               </div>
+                
+            <div class="item item-button-right">
+                <span ng-if="user.permission === 'free'">Free User</span>
+                <span ng-if="user.permission === 'paid'">Premium Member</span>
+                <span ng-if="user.permission !== 'free' && user.permission !== 'paid'">{{user.permission}}</span>
+                <button class="button button-balanced" ng-if="user.permission === 'free'" ng-click="accountModal.hide();openUpgrade()">
+                    Upgrade
+                </button>
+                <button class="button button-assertive" ng-if="user.permission === 'paid'" ng-click="openCancel()">
+                    Cancel Membership
+                </button>                
+            </div>                 
             <label class="item item-input">
               <span class="input-label">Email</span>
               <input type="email" placeholder="Enter your email" ng-model="user.email">
             </label>
+               
             <label class="item item-input">
               <span class="input-label">Password</span>
               <input type="password" placeholder="Enter to change password"  ng-model="user.new_password">

@@ -53,7 +53,9 @@ angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.ser
     
     $ionicPlatform.on("resume", function(){ 
         window.plugin.notification.local.cancelAll();
-        AuthService.userIsLoggedIn().then(function(){},function(){$state.go('login');});
+        AuthService.userIsLoggedIn().then(function(){
+            $rootScope.$broadcast("userDataSet");
+        },function(){$state.go('login');});
         
         if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.close();

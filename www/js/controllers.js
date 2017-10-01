@@ -22,12 +22,24 @@ angular.module('app.controllers', [])
         $scope.helpModal.show();
     }
     
+    $ionicModal.fromTemplateUrl('templates/modals/upgrade.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.upgradeModal = modal;
+      });   
+      
+      
+    $scope.openUpgrade = function(){
+        $scope.upgradeModal.show();
+    }
+    
     $ionicModal.fromTemplateUrl('templates/modals/account.html', {
         scope: $scope,
         animation: 'slide-in-up'
       }).then(function(modal) {
         $scope.accountModal = modal;
-      });     
+      });       
     
     
     $scope.profileStats = {};
@@ -105,7 +117,32 @@ angular.module('app.controllers', [])
           }, options);		
 
 
-    };      
+    };  
+    
+    
+    $scope.openCancel = function(){
+
+        SecuredPopups.show('show',{
+            templateUrl: 'templates/popups/cancel-membership.html',
+            title: 'Confirm',
+            scope: $scope,
+            buttons: [
+              { text: 'No' },
+              {
+                text: '<b>Yes</b>',
+                type: 'button-assertive',
+                onTap: function(e) {
+                    return true;
+                }
+              }
+            ]
+          }).then(function(res) {
+                if (res){
+                    //do cancel membership
+                }
+                    
+            });         
+    }    
   
     
 
@@ -240,7 +277,7 @@ angular.module('app.controllers', [])
     
     $scope.$on("$ionicView.enter", function(event, data){
         $scope.doRefresh();
-        document.body.classList.add("is-premium");
+
     })
     
     $scope.doRefresh = function(){
@@ -251,7 +288,16 @@ angular.module('app.controllers', [])
               if ($scope.progressBar.current < 0){
                 $scope.progressBar.current = moment().diff(moment().isoWeekday($scope.dayOfWeekAsInteger($rootScope.user.profile.calc_day)).day($rootScope.user.profile.calc_day).subtract(1, 'week'), 'days');
               }
+              
+            if ($rootScope.user.permission !== "free" && !document.body.classList.contains("is-premium")){
+                document.body.classList.add("is-premium");
+            }  
+            
+            
             $scope.$broadcast('scroll.refreshComplete');
+
+            
+            
             
         })
     }
@@ -324,7 +370,15 @@ angular.module('app.controllers', [])
     
     
     $scope.openAddWeight = function(){
-        if (!$rootScope.user.bodyweight){
+        
+        if ($rootScope.user.permission === "free" && $rootScope.user.weighins > 1){
+            $scope.$parent.openUpgrade();
+            return;
+        }
+        
+        
+        console.log($rootScope.user)
+        if (!$rootScope.user.bodyweight && !$rootScope.user.last_bodyweight){
             $rootScope.user.bodyweight = {weight:0, unit:"kg"};
         }
         $scope.popupWeight = {weight:$rootScope.user && $rootScope.user.bodyweight ? parseFloat($rootScope.user.bodyweight.weight) : parseFloat($rootScope.user.last_bodyweight.weight)};

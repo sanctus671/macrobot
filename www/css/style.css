@@ -100,7 +100,7 @@ input[type=range]::-webkit-slider-thumb {
     display:block;
 }
 
-.copyrightWrap_2o{
+.copyrightWrap_2o, .copyrightWrap_3g, jdiv[class^="copyrightWrap"]{
     display:none !important;
 }
 
@@ -463,6 +463,20 @@ margin-bottom: 0px;
     right: 20px;
     top: 0px;
     z-index:9;
+}
+
+.weight-progress .upgrade-home{
+    position: absolute;
+    left: 20px;
+    top: 0px;
+    z-index:9;    
+}
+
+.weight-progress .upgrade-home button{
+    font-size: 12px;
+    height: 30px;
+    min-height: 30px;
+    line-height: 30px;    
 }
 
 .weight-progress .settings i{
