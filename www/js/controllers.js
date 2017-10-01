@@ -211,7 +211,11 @@ angular.module('app.controllers', [])
         });            
                        
       });
-    });    
+    });  
+    
+    $scope.$on("$ionicView.enter", function(event, data){
+        document.body.classList.remove("is-premium");
+    })    
     
     
     
@@ -226,7 +230,7 @@ angular.module('app.controllers', [])
     $scope.weighIn = "";
  
  
-    document.body.classList.add("is-premium");
+    
  
 
     $scope.$on('$ionicView.loaded', function() {
@@ -237,6 +241,7 @@ angular.module('app.controllers', [])
     
     $scope.$on("$ionicView.enter", function(event, data){
         $scope.doRefresh();
+        document.body.classList.add("is-premium");
     })
     
     $scope.doRefresh = function(){
@@ -718,7 +723,7 @@ angular.module('app.controllers', [])
                     <div class="col weight-differance ' + (week["average_differance"] > 0 ? 'goal-positive' : (week["average_differance"] === 0 ? '' : 'goal-negative')) + '">\
                         ' + (week["average_differance"] ? parseFloat(week["average_differance"]).toFixed(1) : '0') + ($rootScope.user.profile.weight_unit ? $rootScope.user.profile.weight_unit : "kg") + '\
                         <div class="differance-text">\
-                            From last ' + day + '\
+                            From last week\
                         </div>\
                     </div>\
                 </li>';    
