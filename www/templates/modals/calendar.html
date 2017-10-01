@@ -3,9 +3,30 @@
 		<div class="modal-button" ng-click="calendarModal.hide()">Close</div>            
 		<h1 class="title modal-title">Calendar</h1>
 	</ion-header-bar>
+    
+    
+    
+                <ul class="graph-navigation" ng-if="calendarNav.activeTab === 'graph'">
+                    <li ng-click="calendarNav.activeGraph = 'weighins'" ng-class="{'active' : !calendarNav.activeGraph || calendarNav.activeGraph === 'weighins'}">
+                        <i class="icon ion-arrow-graph-down-right"></i>
+                    </li>
+                    <li ng-click="calendarNav.activeGraph = 'macros'" ng-class="{'active' : calendarNav.activeGraph === 'macros'}">
+                        <i class="icon ion-pie-graph"></i>
+                    </li>
+                    <li  ng-click="calendarNav.activeGraph = 'energy'" ng-class="{'active' : calendarNav.activeGraph === 'energy'}">
+                        <i class="icon ion-pie-graph"></i>
+                    </li>                    
+                </ul>      
+    
+    
+    
+    
 	<ion-content>
+            
+            
+            
 
-        <div  ng-show="!activeTab || activeTab === 'calendar'" class="calendar-tab">    
+        <div  ng-show="!calendarNav.activeTab || calendarNav.activeTab === 'calendar'" class="calendar-tab">    
             <div class="date-navigation">
                 <div class="left">
                     <a ng-click="changeDay(-1)">
@@ -31,18 +52,22 @@
             
         </div>
             
-            <div  ng-if="activeTab === 'graph'" class="graph-tab" id="graph-tab">
-                
-            <div class="graph-container">    
+            
+          
+            
+            
+            <div  ng-if="calendarNav.activeTab === 'graph'" class="graph-tab" id="graph-tab">
+
+            <div class="graph-container" ng-show="!calendarNav.activeGraph || calendarNav.activeGraph === 'weighins'">    
             <h2>Weigh Ins</h2>
             <highchart class="chart-item" id="chart1" config="bwChartConfig"></highchart>
             </div>
 
-                <div class="graph-container">  
+                <div class="graph-container" ng-show="calendarNav.activeGraph === 'macros'">  
             <h2>Macro Breakdown</h2>
             <highchart class="chart-item" id="chart2" config="macroChartConfig"></highchart>
                 </div>
-<div class="graph-container">  
+<div class="graph-container" ng-show="calendarNav.activeGraph === 'energy'">  
             <h2>Energy Breakdown</h2>
             <highchart class="chart-item" id="chart2" config="energyChartConfig"></highchart>             
 </div>
@@ -55,10 +80,10 @@
     
     
         <div class="calendar-tabs tabs tabs-light tabs-icon-top static">
-            <a class="tab-item" ng-class="{'active':!activeTab || activeTab === 'calendar'}" ng-click="activeTab = 'calendar'">
+            <a class="tab-item" ng-class="{'active':!calendarNav.activeTab || calendarNav.activeTab === 'calendar'}" ng-click="calendarNav.activeTab = 'calendar'">
                 <i class="icon ion-ios-calendar"></i> Calendar View
             </a>
-            <a class="tab-item" ng-class="{'active':activeTab === 'graph'}" ng-click="activeTab = 'graph';getStats()">
+            <a class="tab-item" ng-class="{'active':calendarNav.activeTab === 'graph'}" ng-click="calendarNav.activeTab = 'graph';getStats()">
                 <i class="icon ion-pie-graph"></i> Graph View
             </a>
         </div>     

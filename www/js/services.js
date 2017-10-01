@@ -301,7 +301,8 @@ angular.module('app.services', [])
             userData["last_macros"] = angular.copy(userData["macros"]);
             userData["macros"] = data.macro;
             $rootScope.user["last_macros"] = userData["last_macros"];
-            $rootScope.user["macros"] = userData["macros"]
+            $rootScope.user["macros"] = userData["macros"];
+            console.log($rootScope.user);
             AuthService.setUser(userData);             
             deferred.resolve(data.macros);
         })
@@ -356,7 +357,7 @@ angular.module('app.services', [])
     var promise = null;
     var ConnectionService = this;
     var testRequest = function(){
-        $http.post(API_URL, {key:"API_KEY"})    
+        $http.post(API_URL + "/test")    
             .success(function(data) {
                 if (promise){$interval.cancel(promise);promise = null;}  
                 document.body.classList.remove("offline-mode");

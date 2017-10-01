@@ -78,7 +78,7 @@ input[type=range]::-webkit-slider-thumb {
 /* Jivo
 ==================================*/
 
-    jdiv.logoIconCloud_q-._iconDark_2a svg, jdiv.logoIconCloud_q-._iconDark_2a svg path {
+    jdiv.logoIconCloud_q-._iconDark_2a svg, jdiv.logoIconCloud_q-._iconDark_2a svg path,.envelopeIcon_3E._iconDark_2a svg path{
         fill: #69cf8d!important;
 }
 
@@ -92,7 +92,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 ._show_1e.wrap_mW{
-    z-index:10 !important;
+    z-index:9 !important;
         display: none;
 }
 
@@ -355,8 +355,7 @@ right: 5px;
 
 .activity-level.macro-range .range-text{
     color: White;
-    font-size: 12px;
-    margin-top: -20px;    
+    font-size: 12px;   
 }
 
 .activity-level i{
@@ -438,6 +437,7 @@ margin-bottom: 0px;
 .goal-slider .box{
     text-align: center;
     color:#ccc;
+        white-space: nowrap;
 }
 
 .goal-slider .swiper-slide-active .box{
@@ -539,6 +539,9 @@ margin-bottom: 0px;
 
 .macro-details .card .item i, .macro-details .card .item h2{
     color: white;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .macro-details .card .item p{
@@ -796,4 +799,32 @@ padding:20px;
 .chart-item{
     margin:0 auto;
     display:table;
+}
+
+.graph-navigation{
+    position: fixed;
+    right: 0px;
+    top: 80px;  
+        z-index: 11;
+            background-color: rgba(230, 230, 230, 0.5);
+            border-bottom-left-radius: 5px;
+            border-top-left-radius:5px;
+}
+
+.graph-navigation li{
+    padding: 10px 20px;
+    border-bottom: #dedede 1px solid;   
+}
+
+.graph-navigation li:last-child{
+    border-bottom:none;
+}
+
+.graph-navigation li i{
+font-size: 30px;
+    color: rgb(172, 223, 190);   
+}
+
+.graph-navigation li.active i{
+    color: #69cf8d;
 }

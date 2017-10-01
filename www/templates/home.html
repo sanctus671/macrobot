@@ -94,7 +94,7 @@
               <div class="item item-text-wrap item-icon-left item-icon-right">
                   <i class="icon ion-android-bicycle"></i>
                 <h2>{{user.macros.activity_sessions ? user.macros.activity_sessions : 0}}x{{user.macros.activity ? user.macros.activity : 0}} weekly cardio sessions</h2>
-                <p ng-if="user.last_macros && (user.macros.activity_sessions !== user.last_macros.activity_sessions && user.macros.activity !== user.last_macros.activity)">
+                <p ng-if="user.last_macros && (user.macros.activity_sessions !== user.last_macros.activity_sessions || user.macros.activity !== user.last_macros.activity)">
                     <span ng-if="user.macros.activity_sessions >= user.last_macros.activity_sessions">+</span><span ng-if="user.macros.activity_sessions < user.last_macros.activity_sessions">-</span>{{user.macros.activity_sessions - user.last_macros.activity_sessions | number : 0}} 
                     session<span ng-if="(user.macros.activity_sessions - user.last_macros.activity_sessions) !== 1">s</span> 
                     and 

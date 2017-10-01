@@ -56,8 +56,10 @@ angular.module('app.controllers', [])
             $ionicHistory.clearCache();
             $ionicHistory.clearHistory();            
         },function(){
-            console.log("here");
+            $scope.accountModal.hide();
             $state.go("login");
+            $ionicHistory.clearCache();
+            $ionicHistory.clearHistory();  
         });         
     }
     
@@ -78,16 +80,27 @@ angular.module('app.controllers', [])
           options.fileKey="fileToUpload";
           options.fileName= $rootScope.user.email;
           options.mimeType="image/jpeg";
-          options.params = {token:$rootScope.user.sessionid, controller:"create", action:"uploadprogramimage"};
+          options.params = {token:token};
           var ft = new FileTransfer();
           var token = AuthService.getToken();
-          ft.upload(imageURI, encodeURI(API_URL + "/upload?token=" + token), function(data){
+          ft.upload(imageURI, encodeURI(API_URL + "/uploads?token=" + token), function(data){
+              console.log(data);
               $rootScope.user.profile.avatar = data;
           },  
-          function(data){          
+          function(data){     
+              console.log(data);
               SecuredPopups.show('alert',{
               title: 'Error',
-              template: 'Sorry, there was an error uploading your image.'
+              template: 'Sorry, there was an error uploading your image.',
+                buttons: [
+                  {
+                    text: 'OK',
+                    type: 'button-balanced',
+                    onTap: function(e) {
+                        return true;
+                    }
+                  }
+                ]             
               });
           }, options);		
 
@@ -550,7 +563,7 @@ angular.module('app.controllers', [])
     }    
 
     $scope.buildWeek = function(data, id){
-        var week = {average:0, id:id};
+        var week = {average:0, last_average:0, id:id};
         for (var index in data.selected_week){
             var weight = data.selected_week[index];
             week.average = week.average + parseFloat(weight.weight);
@@ -563,12 +576,15 @@ angular.module('app.controllers', [])
             }
             for (var index in data.previous_week){
                 var previousWeight = data.previous_week[index];
+                week.last_average = week.last_average + parseFloat(previousWeight.weight);
                 if (day === moment(previousWeight.created_at).format("dddd")){
                     week[day].differance = parseFloat(weight.weight) - parseFloat(previousWeight.weight);
                 }
             }
         }
         week.average = data.selected_week.length > 0 ? week.average / data.selected_week.length : 0;   
+        week.last_average = data.previous_week.length > 0 ? week.last_average / data.previous_week.length : 0;  
+        week.average_differance = week.last_average > 0 ? week.average - week.last_average : 0;
         
         return week;
     }
@@ -689,11 +705,26 @@ angular.module('app.controllers', [])
                     }
                 }
                 
+                
+                
+                html = html + '<li class="item row">\
+                    <div class="col weight-day">\
+                        <strong>Average</strong>\
+                        <div class="weight-hour">For the week</div>\
+                    </div>\
+                    <div class="col weight-number">\
+                        ' + (week["average"] ? week["average"].toFixed(1) : '0') + ($rootScope.user.profile.weight_unit ? $rootScope.user.profile.weight_unit : "kg") + '\
+                    </div>\
+                    <div class="col weight-differance ' + (week["average_differance"] > 0 ? 'goal-positive' : (week["average_differance"] === 0 ? '' : 'goal-negative')) + '">\
+                        ' + (week["average_differance"] ? parseFloat(week["average_differance"]).toFixed(1) : '0') + ($rootScope.user.profile.weight_unit ? $rootScope.user.profile.weight_unit : "kg") + '\
+                        <div class="differance-text">\
+                            From last ' + day + '\
+                        </div>\
+                    </div>\
+                </li>';    
+        
+        
             html = html + '</ul>\
-            <div class="average">\
-                ' + (week["average"] ? week["average"].toFixed(1) : '0') + ($rootScope.user.profile.weight_unit ? $rootScope.user.profile.weight_unit : "kg") + '\
-                <div class="average-text">Weekly Average</div>\
-            </div>\
         </div>'; 
 
         document.getElementById(week.id).innerHTML = html;
@@ -716,6 +747,11 @@ angular.module('app.controllers', [])
     
     
     //stats stuff
+    
+    $scope.calendarNav = {
+        activeGraph : "weighins",
+        activeTab: "calendar"
+    }
     
     $scope.getStats = function(){
         MainService.getWeightStats().then(function(data){
