@@ -347,7 +347,66 @@ angular.module('app.services', [])
 
 
         return deferred.promise;         
-    }     
+    } 
+    
+    this.checkAffiliate = function(code){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}  
+        $http.get(API_URL + "/affiliates/" + code + "?token=" + token)
+        .success(function(data) { 
+            console.log(data);
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            if (data && data.error && data.error.status_code === 401){AuthService.logout();$state.go("login")}
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }
+    
+    this.createBilling = function(product){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.post(API_URL + "/billings?token=" + token, product)
+        .success(function(data) {
+            var userData = AuthService.getUser();
+            userData["permission"] = "paid";
+            $rootScope.user = userData;
+            AuthService.setUser(userData);             
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }
+    
+    
+    this.cancelMembership = function(){
+        var deferred = $q.defer();
+        var token = AuthService.getToken();
+        if (!token){deferred.reject("No token");}        
+        $http.delete(API_URL + "/billings/cancel?token=" + token)
+        .success(function(data) {
+            var userData = AuthService.getUser();
+            userData["permission"] = "free";
+            $rootScope.user = userData;
+            AuthService.setUser(userData);             
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;         
+    }    
     
 })
 

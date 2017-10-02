@@ -29,7 +29,8 @@ angular.module('app.controllers', [])
         $scope.upgradeModal = modal;
       });   
       
-      
+    
+    $scope.product = {affiliate:"", affiliate_checked:false, affiliate_loading:false, package:"full", amount:7.99, loading:false}
     $scope.openUpgrade = function(){
         $scope.upgradeModal.show();
     }
@@ -139,12 +140,94 @@ angular.module('app.controllers', [])
           }).then(function(res) {
                 if (res){
                     //do cancel membership
-                }
+                    MainService.cancelMembership().then(function(){
+                        document.body.classList.remove("is-premium");
+                          SecuredPopups.show('alert',{
+                          title: 'Sorry to see you go',
+                          template: 'You can continue using the app as a free user. If you want to sign up again, we will welcome you back with open arms!',
+                            buttons: [
+                              {
+                                text: 'OK',
+                                type: 'button-balanced',
+                                onTap: function(e) {
+                                    return true;
+                                }
+                              }
+                            ]             
+                          });            
+                    },function(){
+                          SecuredPopups.show('alert',{
+                          title: 'Error',
+                          template: 'Sorry, there was an error cancelling your membership. Contact us as support@macrobot.com for help.',
+                            buttons: [
+                              {
+                                text: 'OK',
+                                type: 'button-balanced',
+                                onTap: function(e) {
+                                    return true;
+                                }
+                              }
+                            ]             
+                          });            
+                    })
+                }                    
+                    
+                
                     
             });         
     }    
   
+    $scope.checkAffiliate = function(){
+        $scope.product.affiliate_checked = false;
+        $scope.product.affiliate_loading = true;
+        $scope.product.package = "full";
+        $scope.product.amount = 7.99;        
+        MainService.checkAffiliate($scope.product.affiliate_code).then(function(){
+            $scope.product.affiliate_checked = true;
+            $scope.product.affiliate_loading = false;
+            $scope.product.package = "affiliate";
+            $scope.product.amount = 3.99;
+        },function(){
+            $scope.product.affiliate_loading = false;
+        })
+    }
     
+    $scope.doUpgrade = function(){
+        $scope.product.loading = true;
+        MainService.createBilling($scope.product).then(function(){
+            $scope.product.loading = false;
+            document.body.classList.add("is-premium");
+            $scope.upgradeModal.hide();
+              SecuredPopups.show('alert',{
+              title: 'Thanks!',
+              template: 'You are now a member of the Macrobot community. You can get started right away by entering your weigh-in or live chatting with one of our coaches. We will be sending you weekly adjustments to your macros.',
+                buttons: [
+                  {
+                    text: 'OK',
+                    type: 'button-balanced',
+                    onTap: function(e) {
+                        return true;
+                    }
+                  }
+                ]             
+              });            
+        },function(){
+            $scope.product.loading = false;
+              SecuredPopups.show('alert',{
+              title: 'Error',
+              template: 'Sorry, there was an error setting up your account. Contact us as support@macrobot.com for help.',
+                buttons: [
+                  {
+                    text: 'OK',
+                    type: 'button-balanced',
+                    onTap: function(e) {
+                        return true;
+                    }
+                  }
+                ]             
+              });            
+        })
+    }
 
 })
 
@@ -371,7 +454,7 @@ angular.module('app.controllers', [])
     
     $scope.openAddWeight = function(){
         
-        if ($rootScope.user.permission === "free" && $rootScope.user.weighins > 1){
+        if ($rootScope.user.permission === "free" && $rootScope.user.weighins > 7){
             $scope.$parent.openUpgrade();
             return;
         }

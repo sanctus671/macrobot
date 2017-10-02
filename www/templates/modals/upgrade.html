@@ -1,33 +1,98 @@
 <ion-modal-view>
-	<ion-header-bar class="bar-balanced" align-title="center">
+	<ion-header-bar class="bar-balanced account-header" align-title="center">
 		<div class="modal-button" ng-click="upgradeModal.hide()">Close</div>            
 		<h1 class="title modal-title  title-center">Upgrade</h1>
 	</ion-header-bar>
 	<ion-content >
-            header section:
-           Simplify your nutrition
-           
-           
-           Self adjusting
-           -enter unlimited weighins for ultimate accuracy
-           -automated weekly macro adjustments
-           
-           Support
-           -access to expert coaches
-           -live chat
-           
-           Development
-           -support ongoing development
-           -priority feature requests
-           
+            
+            <div class="upgrade-header">
+                <img src="img/crown-mb.png"/>
+                <h3>Simplify your nutrition</h3>
+            </div>
+            
+
+            <div class="card">
+                <div class="item item-divider">
+                  Self adjusting
+                </div>
+                
+                <div class="item item-icon-left">
+                    <i class="icon ion-ios-infinite"></i>
+                    <h2>Unlimited weighins</h2>
+                    <p>Unlimited weighins for ultimate accuracy.</p>
+                </div>
+
+                <div class="item item-icon-left">
+                    <i class="icon ion-ios-cog"></i>
+                    <h2>Automated macros</h2>
+                    <p>Automated weekly macro adjustments.</p>
+                </div>
+  
+            </div>
+
+
+            <div class="card">
+                <div class="item item-divider">
+                  Support
+                </div>
+                
+                <div class="item item-icon-left">
+                    <i class="icon ion-ios-people"></i>
+                    <h2>Expert coaches</h2>
+                    <p>Access to expert nutrition coaches.</p>
+                </div>
+
+                <div class="item item-icon-left">
+                    <i class="icon ion-ios-chatboxes"></i>
+                    <h2>Live chat</h2>
+                    <p>Instant answers to your questions.</p>
+                </div>
+  
+            </div>
+            
+            
+            
+            <div class="card" style="margin-bottom:80px;">
+                <div class="item item-divider">
+                  Development
+                </div>
+                
+                <div class="item item-icon-left">
+                    <i class="icon ion-star"></i>
+                    <h2>Support us</h2>
+                    <p>Support ongoing development of Macrobot.</p>
+                </div>
+
+                <div class="item item-icon-left">
+                    <i class="icon ion-ios-email"></i>
+                    <h2>Priority requests</h2>
+                    <p>Suggest new features you want.</p>
+                </div>
+  
+            </div>            
 
             
-           enter affiliate code (optional)
-           <button class="button button-balanced" ng-click="doUpgrade()">
-                $7.99/month
-            </button> 
-            
-            
-            
 	</ion-content>
+    
+    
+<div class="bar bar-footer upgrade-footer">
+    
+            <label class="item item-input">
+              <input type="text" placeholder="Affiliate code (optional)" ng-model="product.affiliate_code" ng-model-options='{ debounce: 500 }' ng-change="checkAffiliate()">
+            </label>   
+    <i class="icon ion-ios-checkmark-outline" ng-if="product.affiliate_checked"></i>
+    <ion-spinner class="spinner-balanced" ng-if="product.affiliate_loading"></ion-spinner>
+    <button class="button button-balanced pull-right" ng-click="doUpgrade()" ng-if="!product.affiliate_checked">
+        <ion-spinner class="spinner-balanced" ng-if="product.loading"></ion-spinner>
+        <span ng-if="!product.loading">$7.99/month</span>
+     </button> 
+    
+    <button class="button button-balanced pull-right" ng-click="doUpgrade()" ng-if="product.affiliate_checked">
+        <ion-spinner class="spinner-balanced" ng-if="product.loading"></ion-spinner> 
+        <span ng-if="!product.loading">$3.99/month</span>
+     </button>     
+    
+    
+</div>    
+    
 </ion-modal-view>

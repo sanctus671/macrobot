@@ -783,6 +783,47 @@ font-size: 24px;
         padding-bottom: 80px;
 }
 
+/* Upgrade
+==================================*/
+
+.upgrade-header{
+background-color: #69cf8d;
+    text-align: center;
+    padding: 20px 20px 30px 20px;    
+}
+
+.upgrade-header img{
+    max-width:150px;
+}
+
+.upgrade-header h3{
+    margin: 0px;
+    color: white;    
+}
+
+.upgrade-footer .icon{
+    font-size: 24px;
+    color: #69cf8d;
+    line-height: 34px;
+    padding-left: 10px;    
+}
+.upgrade-footer .spinner{
+padding-left: 10px;
+    line-height: 42px;    
+}
+.upgrade-footer .spinner svg{
+    width: 20px;
+    height: 20px;   
+}
+.upgrade-footer .button{
+    min-width: 100px;
+}
+
+.upgrade-footer .button .spinner{
+    padding-left: 0px;
+}
+
+
 /*stats */
 
 .graph-tab{
