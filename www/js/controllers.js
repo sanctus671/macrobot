@@ -3,7 +3,7 @@
 
 angular.module('app.controllers', [])
 
-.controller('AppCtrl', function($scope, $timeout, SecuredPopups, AuthService, API_URL, $state, $cordovaNativeAudio, $ionicHistory, $ionicModal, $ionicSlideBoxDelegate, $rootScope, $q, $ionicPopover, MainService) {
+.controller('AppCtrl', function($scope, $timeout, SecuredPopups, AuthService, API_URL,UPLOAD_URL, $state, $cordovaNativeAudio, $ionicHistory, $ionicModal, $ionicSlideBoxDelegate, $rootScope, $q, $ionicPopover, MainService) {
 
     $scope.checkConnection = function(scope){
         $rootScope.$on("connectionFound", function(){scope.doRefresh();});        
@@ -96,7 +96,7 @@ angular.module('app.controllers', [])
           options.params = {token:token};
           var ft = new FileTransfer();
           var token = AuthService.getToken();
-          ft.upload(imageURI, encodeURI(API_URL + "/uploads?token=" + token), function(data){
+          ft.upload(imageURI, encodeURI(UPLOAD_URL + "?token=" + token), function(data){
               console.log(data);
               $rootScope.user.profile.avatar = data;
           },  

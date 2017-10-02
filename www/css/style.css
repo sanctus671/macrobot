@@ -476,7 +476,7 @@ margin-bottom: 0px;
     font-size: 12px;
     height: 30px;
     min-height: 30px;
-    line-height: 30px;    
+    line-height: 28px;    
 }
 
 .weight-progress .settings i{
@@ -821,6 +821,15 @@ padding-left: 10px;
 
 .upgrade-footer .button .spinner{
     padding-left: 0px;
+}
+
+.upgrade-footer .item-input{
+    padding-left: 10px;   
+    max-width: 180px;
+}
+
+.upgrade-footer input{
+    padding-right: 5px;
 }
 
 
