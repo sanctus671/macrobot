@@ -60,6 +60,10 @@ angular.module('app.controllers', [])
         })
     }
     
+    $scope.getAvatar = function(){
+        return UPLOAD_URL + "/" + $scope.user.profile.avatar;
+    }
+    
     $scope.logout = function(){
         console.log("here");
         AuthService.logout().then(function(){
@@ -98,7 +102,7 @@ angular.module('app.controllers', [])
           var token = AuthService.getToken();
           ft.upload(imageURI, encodeURI(UPLOAD_URL + "?token=" + token), function(data){
               console.log(data);
-              $rootScope.user.profile.avatar = data;
+              $rootScope.user.profile.avatar = data["url"];
           },  
           function(data){     
               console.log(data);

@@ -7,7 +7,7 @@
 	<ion-content >
             <div class="account-highlights">
                 <div class="account-avatar">
-                    <img ng-src="{{user.profile.avatar ? user.profile.avatar : 'img/avatar.png'}}" ng-click="useGetFile()"/>
+                    <img ng-src="{{user.profile.avatar ? getAvatar(user.profile.avatar) : 'img/avatar.png'}}" ng-click="useGetFile()"/>
                 </div>
                 <div class="account-name">
                     <span ng-if="!user.profile.first_name && user.profile.gender === 'female'">Jane</span>
