@@ -102,8 +102,21 @@ angular.module('app.controllers', [])
           var token = AuthService.getToken();
           ft.upload(imageURI, encodeURI(UPLOAD_URL + "?token=" + token), function(data){
               console.log(data);
-              $rootScope.user.profile.avatar = data["url"];
+
+              var response = JSON.parse(data.response);
+              if (response.url){   
+                  $rootScope.user.profile.avatar = data["url"];     
+              }
+              else{
+                  SecuredPopups.show('alert',{
+                  title: 'Error',
+                  template: "Error: " + JSON.stringify(response)
+                  });                
+              }              
+              
+              
           },  
+          
           function(data){     
               console.log(data);
               SecuredPopups.show('alert',{
